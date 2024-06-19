@@ -4,12 +4,23 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  # Associations
   has_one :status, dependent: :destroy
   accepts_nested_attributes_for :status
 
-  # to view all roles, use User.role.keys
+  # To view all roles, use User.role.keys
   enum :role, {
     admin: 'admin',
     trader: 'trader'
   }, default: 'trader'
+
+  before_create :set_trader_status_as_pending
+
+  private
+
+  def set_trader_status_as_pending
+    return unless trader?
+
+    build_status(status_type: 'pending')
+  end
 end
