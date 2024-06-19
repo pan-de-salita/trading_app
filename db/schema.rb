@@ -10,9 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_18_072551) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_19_101223) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  # Custom types defined in this database.
+  # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "role", ["admin", "trader"]
+  create_enum "status_type", ["pending", "approved", "denied"]
+
+  create_table "statuses", force: :cascade do |t|
+    t.enum "status_type", default: "pending", null: false, enum_type: "status_type"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_statuses_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -22,10 +35,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_18_072551) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "status"
-    t.integer "role"
+    t.enum "role", default: "trader", null: false, enum_type: "role"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "statuses", "users"
 end
