@@ -3,6 +3,8 @@
 class Users::RegistrationsController < Devise::RegistrationsController
    before_action :configure_sign_up_params, only: [:create]
    before_action :configure_account_update_params, only: [:update]
+   before_action :check_admin, only: [:new, :create, :edit, :update, :destroy]
+   before_action :configure_permitted_parameters, if: :devise_controller?
 
   # GET /resource/sign_up
   # def new
@@ -62,4 +64,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def set_user
     @user = current_user
   end
+
+  private
+
+    def check_admin
+      if current_user.present? && !current_user.admin?
+        redirect_to root_path, alert: "Only administrators can view this page."
+      end
+    end
+
+    def configure_permitted_parameters
+      devise_parameter_sanitizer.permit(:sign_up, keys: [:email, :password, :password_confirmation, :role])
+      devise_parameter_sanitizer.permit(:account_update, keys: [:email, :password, :password_confirmation, :current_password, :role])
+    end
+
 end
