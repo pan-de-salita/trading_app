@@ -1,0 +1,6 @@
+<br> <%= "Users" %> <br>
+    <% users = User.all %>
+    <% users.each do |user| %>
+       
+        <%= user.email %>
+    <% end %>
