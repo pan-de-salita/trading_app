@@ -2,5 +2,10 @@ class Transaction < ApplicationRecord
   belongs_to :stock, optional: true
   belongs_to :user
 
-  # add remaining enum syntax here
+  enum :transaction_type, {
+  deposit: "deposit",
+  withdraw: "withdraw",
+  buy: "buy",
+  sell: "sell"
+  }
 end
