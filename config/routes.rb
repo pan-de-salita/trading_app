@@ -4,7 +4,10 @@ Rails.application.routes.draw do
   }
 
   namespace :admin do
-    resources :users, only: %i[new create edit index update destroy]
+    resources :users, only: %i[new create edit index update destroy] do
+      patch 'approve_trader_account'
+      patch 'deny_trader_account'
+    end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
