@@ -30,8 +30,7 @@ end
 # After this update, the statuses table might look like this:
 #
 # ID    status_type    user_id    created_at          updated_at
-# 1     pending        10         2024-06-18 00:00    2024-06-18 00:00
-# 2     approved       10         2024-06-19 12:30    2024-06-19 12:30
+# 1     approved       10         2024-06-18 00:00    2024-06-19 12:30
 #
 # This entry represents the transition of the user's status from "pending" to
 # "approved". The created_at and updated_at timestamps reflect when this status
