@@ -1,24 +1,19 @@
 <h1>Pages#home</h1>
 
 <% if current_user.present? %>
-    <%= button_to "Sign Out", destroy_user_session_path, method: :delete %>
-    <%= link_to "Edit Account", edit_user_registration_path %>
-   
-    <% if current_user.admin? %>
-        <div>
-            <%= render 'all_users'  %>
-            <%= link_to 'All Users', admin_users_path %>
-            <%= link_to 'New User', new_admin_user_path %>
-        </div>
-    <% end%>
+  <%= button_to "Sign Out", destroy_user_session_path, method: :delete %>
+  <%= link_to "Edit Account", edit_user_registration_path %>
 
-    <% else %>
-        <%= button_to "Sign In", new_user_session_path %>
-        <%= link_to "Create Account", new_user_registration_path %>
+  <% if current_user.admin? %>
+    <div>
+      <%= render "all_users" %>
+      <%= link_to "All Users", admin_users_path %>
+      <%= link_to "New User", new_admin_user_path %>
+    </div>
+  <% end %>
+
+<% else %>
+  <%= button_to "Sign In", new_user_session_path %>
+  <%= link_to "Create Account", new_user_registration_path %>
 <% end %>
-<%= current_user %>
-
-
-
-
-
+<%= current_user.inspect %>
