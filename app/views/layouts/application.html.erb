@@ -12,6 +12,12 @@
 
   <body>
     <%= yield %>
-
   </body>
+
+  <footer>
+    <!-- TODO: Remove during deployment -->
+    <span><%= debug(params) if Rails.env.development? %></span>
+    <br>
+    <span><%= request.fullpath if Rails.env.development? %></span>
+  </footer>
 </html>
