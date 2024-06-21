@@ -18,6 +18,10 @@ class User < ApplicationRecord
   # TODO: Evoke update_trader_status_to_approved
   # TODO: Evoke update_trader_status_to_denied
 
+  def active_for_authentication?
+    super && status.approved?
+  end
+
   private
 
   def initialize_trader_status_as_pending
@@ -34,10 +38,6 @@ class User < ApplicationRecord
     status.update(status_type: 'denied')
   end
 
-  # def active_for_authentication?
-  #   super && status.approved?
-  # end
-  #
   # def inactive_message
   #   # Messages can be found in devise.en.yml
   #   status.approved? ? :signed_up : :signed_up_but_inactive
