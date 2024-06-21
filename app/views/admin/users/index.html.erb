@@ -3,12 +3,14 @@
         <%= "Users" %>
                 <% users = User.all %>
                 <% users.each do |user| %>
-                <li>
-                    <%= user.email %>
-                    <%= user.role %>
-                    <%= link_to 'Edit', edit_admin_user_path(user) %>
-                    <%= button_to "Delete", admin_user_path(user), method: :delete, data: {confirm: 'This process is irreversible. Continue?' } %>
-                </li>
-             <% end %>
+                    <% if user != current_user %>     <%# Admin accounts cannopt edit their own account %>
+                        <li>
+                            <%= user.email %>
+                            <%= user.role %>
+                            <%= link_to 'Edit', edit_admin_user_path(user) %>
+                            <%= button_to "Delete", admin_user_path(user), method: :delete, data: {confirm: 'This process is irreversible. Continue?' } %>
+                        </li>
+                    <% end %>
+                <% end %>
     </ul>
 </div>
