@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_21_114920) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_21_121537) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,6 +18,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_21_114920) do
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "role", ["admin", "trader"]
   create_enum "status_type", ["pending", "approved", "denied"]
+  create_enum "transaction_type", ["deposit", "withdraw", "buy", "sell"]
 
   create_table "statuses", force: :cascade do |t|
     t.enum "status_type", default: "pending", null: false, enum_type: "status_type"
@@ -30,6 +31,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_21_114920) do
   create_table "stocks", force: :cascade do |t|
     t.string "ticker"
     t.string "company_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "transactions", force: :cascade do |t|
+    t.decimal "amount"
+    t.decimal "share_price"
+    t.decimal "share_qty"
+    t.enum "transaction_type", null: false, enum_type: "transaction_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
