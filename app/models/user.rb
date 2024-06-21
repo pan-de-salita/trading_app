@@ -14,13 +14,13 @@ class User < ApplicationRecord
     trader: 'trader'
   }, default: 'trader'
 
-  before_create :set_trader_status_to_pending
+  before_create :initialize_trader_status_as_pending
   # TODO: Evoke update_trader_status_to_approved
-  # TODO: Evoke update_trader_status_to_approved
+  # TODO: Evoke update_trader_status_to_denied
 
   private
 
-  def set_trader_status_to_pending
+  def initialize_trader_status_as_pending
     return unless trader?
 
     # NOTE: build_status does not create a Status instance; it only initializes it
