@@ -66,15 +66,16 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   private
-  
-    # def check_admin
-    #   if current_user.present? && !current_user.admin?
-    #     redirect_to root_path, notice: "Only administrators can view this page."
-    #   end
-    # end
 
-    def configure_permitted_parameters
-      devise_parameter_sanitizer.permit(:sign_up, keys: [:email, :password, :password_confirmation, :role])
-      devise_parameter_sanitizer.permit(:account_update, keys: [:email, :password, :password_confirmation, :current_password, :role])
-    end
+  # def check_admin
+  #   if current_user.present? && !current_user.admin?
+  #     redirect_to root_path, notice: "Only administrators can view this page."
+  #   end
+  # end
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: %i[email password password_confirmation role])
+    devise_parameter_sanitizer.permit(:account_update,
+                                      keys: %i[email password password_confirmation current_password role])
+  end
 end
