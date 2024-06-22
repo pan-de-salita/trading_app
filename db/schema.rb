@@ -16,8 +16,10 @@ ActiveRecord::Schema[7.1].define(version: 20_240_622_020_820) do
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
-  create_enum 'role', %w[admin trader]
-  create_enum 'status_type', %w[pending approved denied]
+
+  create_enum "role", ["admin", "trader"]
+  create_enum "status_type", ["pending", "approved", "denied"]
+  create_enum "transaction_type", ["deposit", "withdraw", "buy", "sell"]
 
   create_table 'statuses', force: :cascade do |t|
     t.enum 'status_type', default: 'pending', null: false, enum_type: 'status_type'
@@ -27,6 +29,26 @@ ActiveRecord::Schema[7.1].define(version: 20_240_622_020_820) do
     t.index ['user_id'], name: 'index_statuses_on_user_id'
   end
 
+  create_table "stocks", force: :cascade do |t|
+    t.string "ticker"
+    t.string "company_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "transactions", force: :cascade do |t|
+    t.decimal "amount"
+    t.decimal "share_price"
+    t.decimal "share_qty"
+    t.enum "transaction_type", null: false, enum_type: "transaction_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.bigint "stock_id"
+    t.index ["stock_id"], name: "index_transactions_on_stock_id"
+    t.index ["user_id"], name: "index_transactions_on_user_id"
+  end
+  
   create_table 'users', force: :cascade do |t|
     t.string 'email', default: '', null: false
     t.string 'encrypted_password', default: '', null: false
@@ -45,5 +67,7 @@ ActiveRecord::Schema[7.1].define(version: 20_240_622_020_820) do
     t.index ['reset_password_token'], name: 'index_users_on_reset_password_token', unique: true
   end
 
-  add_foreign_key 'statuses', 'users'
+  add_foreign_key "statuses", "users"
+  add_foreign_key "transactions", "stocks"
+  add_foreign_key "transactions", "users"
 end
