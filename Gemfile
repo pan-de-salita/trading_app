@@ -73,4 +73,3 @@ end
 
 gem "devise", "~> 4.9"
 gem 'alphavantage'
-gem 'dotenv'
