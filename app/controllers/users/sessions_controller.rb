@@ -11,7 +11,8 @@ class Users::SessionsController < Devise::SessionsController
   # POST /resource/sign_in
   def create
     super
-    return root_path if resource.is_a?(User) && (resource.status.approved? || resource.admin?)
+    return root_path if resource.is_a?(User) &&
+                        (resource.status.approved? || resource.admin?)
 
     new_user_session_path
   end
