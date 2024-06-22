@@ -2,7 +2,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable, :confirmable
 
   # Associations
   has_one :status, dependent: :destroy
@@ -19,8 +19,13 @@ class User < ApplicationRecord
   # TODO: Evoke update_trader_status_to_denied
 
   def active_for_authentication?
-    super && status.approved?
+    super && (status.approved? || created_at?)
   end
+
+  # def inactive_message
+  #   # Messages can be found in devise.en.yml
+  #   status.approved? ? :signed_up : :signed_up_but_inactive
+  # end
 
   private
 
@@ -37,9 +42,4 @@ class User < ApplicationRecord
   def update_trader_status_to_denied
     status.update(status_type: 'denied')
   end
-
-  # def inactive_message
-  #   # Messages can be found in devise.en.yml
-  #   status.approved? ? :signed_up : :signed_up_but_inactive
-  # end
 end
