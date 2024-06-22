@@ -10,22 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_21_123753) do
+ActiveRecord::Schema[7.1].define(version: 20_240_622_020_820) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension 'plpgsql'
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
+
   create_enum "role", ["admin", "trader"]
   create_enum "status_type", ["pending", "approved", "denied"]
   create_enum "transaction_type", ["deposit", "withdraw", "buy", "sell"]
 
-  create_table "statuses", force: :cascade do |t|
-    t.enum "status_type", default: "pending", null: false, enum_type: "status_type"
-    t.bigint "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_statuses_on_user_id"
+  create_table 'statuses', force: :cascade do |t|
+    t.enum 'status_type', default: 'pending', null: false, enum_type: 'status_type'
+    t.bigint 'user_id', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['user_id'], name: 'index_statuses_on_user_id'
   end
 
   create_table "stocks", force: :cascade do |t|
@@ -47,18 +48,23 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_21_123753) do
     t.index ["stock_id"], name: "index_transactions_on_stock_id"
     t.index ["user_id"], name: "index_transactions_on_user_id"
   end
-
-  create_table "users", force: :cascade do |t|
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.enum "role", default: "trader", null: false, enum_type: "role"
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  
+  create_table 'users', force: :cascade do |t|
+    t.string 'email', default: '', null: false
+    t.string 'encrypted_password', default: '', null: false
+    t.string 'reset_password_token'
+    t.datetime 'reset_password_sent_at'
+    t.datetime 'remember_created_at'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.enum 'role', default: 'trader', null: false, enum_type: 'role'
+    t.string 'confirmation_token'
+    t.datetime 'confirmed_at'
+    t.datetime 'confirmation_sent_at'
+    t.string 'unconfirmed_email'
+    t.index ['confirmation_token'], name: 'index_users_on_confirmation_token', unique: true
+    t.index ['email'], name: 'index_users_on_email', unique: true
+    t.index ['reset_password_token'], name: 'index_users_on_reset_password_token', unique: true
   end
 
   add_foreign_key "statuses", "users"

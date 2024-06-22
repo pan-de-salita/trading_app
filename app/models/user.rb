@@ -2,7 +2,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable, :confirmable
 
   # Associations
   has_one :status, dependent: :destroy
@@ -18,14 +18,21 @@ class User < ApplicationRecord
   # TODO: Evoke update_trader_status_to_approved
   # TODO: Evoke update_trader_status_to_denied
 
+  def active_for_authentication?
+    super && (status.approved? || created_at?)
+  end
+
+  # def inactive_message
+  #   # Messages can be found in devise.en.yml
+  #   status.approved? ? :signed_up : :signed_up_but_inactive
+  # end
+
   private
 
   def initialize_trader_status_as_pending
     return unless trader?
 
-    # NOTE: build_status does not create a Status instance; it only initializes it
-    init_status = build_status(status_type: 'pending')
-    init_status.save if init_status.valid?
+    build_status(status_type: 'pending')
   end
 
   def update_trader_status_to_approved
