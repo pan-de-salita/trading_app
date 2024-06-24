@@ -17,7 +17,8 @@ class Admin::UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
+    @user = User.new(user_params.merge({ admin_created: true }))
+
     if @user.save
       redirect_to root_path, notice: 'User created successfully.'
     else
