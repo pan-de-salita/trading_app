@@ -16,6 +16,13 @@
 
   <footer>
     <!-- FOR DEBUGGING -->
+    <% if current_user.admin? %>
+      <% flash.each do |type, msg| %>
+        <div class="alert alert-info">
+          <%= msg %>
+        </div>
+      <% end %>
+    <% end %>
     <br>
     CURRENT_USER:
     <%= current_user.inspect %>

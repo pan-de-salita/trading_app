@@ -7,6 +7,7 @@
         <%= user.role %>
         (<%= user.status.status_type %>)
         <%= link_to "Edit", edit_admin_user_path(user) %>
+        <!-- Add mailer for deleting a user? -->
         <%= button_to "Delete",
         admin_user_path(user),
         method: :delete,
