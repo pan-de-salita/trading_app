@@ -83,9 +83,11 @@ class Admin::UsersController < ApplicationController
     @user.status.update(status_type: status)
 
     if @user.status.denied?
-      redirect_to admin_users_path, notice: "User #{@user.email} is #{status}."
+      ApplicationMailer.denied_status(@user).deliver_now
     else
-      redirect_to admin_users_path, notice: "User #{@user.email} is not #{status}."
+      ApplicationMailer.approved_status(@user).deliver_now
     end
+
+    redirect_to admin_users_path, notice: "User #{@user.email} is #{status}."
   end
 end

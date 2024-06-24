@@ -16,12 +16,14 @@
         <%= button_to "Approve",
         admin_user_approve_trader_account_path(user),
         method: :patch,
+        disabled: user.status.approved? ? true : false,
         data: {
           confirm: "Approve this user?",
         } %>
         <%= button_to "Deny",
         admin_user_deny_trader_account_path(user),
         method: :patch,
+        disabled: user.status.denied? ? true : false,
         data: {
           confirm: "Deny this user?",
         } %>
