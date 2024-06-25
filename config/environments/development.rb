@@ -78,4 +78,16 @@ Rails.application.configure do
   # letter_opener config
   config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.perform_deliveries = true
+
+  # smtp config
+  # config.action_mailer.delivery_method = :letter_opener
+  # config.action_mailer.smtp_settings = {
+  #   address: 'smtp.gmail.com',
+  #   port: 587,
+  #   user_name: '[email protected]', # Your Gmail username
+  #   password: '########', # Your Gmail password
+  #   authentication: 'plain',
+  #   enable_starttls_auto: true
+  # }
+
 end
