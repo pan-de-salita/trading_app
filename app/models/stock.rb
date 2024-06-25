@@ -12,7 +12,7 @@ class Stock < ApplicationRecord
     update(
       company_name: BaseStocks.find(ticker: ticker.to_s).company_name,
       # most updated close price
-      share_price: stock_info.time_series_daily.first[1].close
+      current_price: stock_info.time_series_daily.first[1].close
     )
   end
 end
