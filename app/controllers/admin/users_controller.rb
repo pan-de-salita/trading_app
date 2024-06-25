@@ -17,7 +17,8 @@ class Admin::UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
+    @user = User.new(user_params.merge({ admin_created: true }))
+
     if @user.save
       redirect_to root_path, notice: 'User created successfully.'
     else
@@ -82,9 +83,11 @@ class Admin::UsersController < ApplicationController
     @user.status.update(status_type: status)
 
     if @user.status.denied?
-      redirect_to admin_users_path, notice: "User #{@user.email} is #{status}."
+      ApplicationMailer.denied_status(@user).deliver_now
     else
-      redirect_to admin_users_path, notice: "User #{@user.email} is not #{status}."
+      ApplicationMailer.approved_status(@user).deliver_now
     end
+
+    redirect_to admin_users_path, notice: "User #{@user.email} is #{status}."
   end
 end

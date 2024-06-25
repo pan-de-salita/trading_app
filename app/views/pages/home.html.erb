@@ -1,11 +1,5 @@
 <h1>Pages#home</h1>
 
-<% flash.each do |type, msg| %>
-  <div class="alert alert-info">
-    <%= msg %>
-  </div>
-<% end %>
-
 <% if current_user.present? %>
   <%= button_to "Sign Out", destroy_user_session_path, method: :delete %>
   <%= link_to "Edit Account", edit_user_registration_path %>
