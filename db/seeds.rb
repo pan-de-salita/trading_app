@@ -21,16 +21,16 @@ admin.skip_confirmation!
 admin.save
 
 # Populate Stocks table with data from company_list.csv
-
 require 'csv'
 
 CSV.foreach('db/seeds/company_list.csv', headers: true) do |row|
-  next unless row['assetType'] == 'Stock' && row['status'] == 'Active'
+  next unless !row['name'].nil? && row['assetType'] == 'Stock' && row['status'] == 'Active'
 
   Stock.create(
     ticker: row['symbol'],
     company_name: row['name']
   )
 
+  # For debugging only. Enjoy the Matrix simulation.
   p Stock.last
 end
