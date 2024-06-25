@@ -11,34 +11,35 @@
   </head>
 
   <body>
+    <!-- navbar as partial here -->
     <%= yield %>
-  </body>
 
-  <footer>
-    <!-- FOR DEBUGGING -->
-    <br>
-    <!-- FOR TOAST?? -->
-    <% if current_user.admin? %>
-      <% flash.each do |type, msg| %>
-        <div class="alert alert-info">
-          <%= msg %>
-        </div>
+    <footer>
+      <!-- FOR DEBUGGING -->
+      <br>
+      <!-- FOR TOAST?? -->
+      <% if current_user && current_user.admin? %>
+        <% flash.each do |type, msg| %>
+          <div class="alert alert-info">
+            <%= msg %>
+          </div>
+        <% end %>
       <% end %>
-    <% end %>
-    <br>
-    CURRENT_USER:
-    <%= current_user.inspect %>
-    <br>
-    STATUS:
-    <%= current_user.status.status_type if current_user %>
-    <br>
-    CONFIRMED_DATE:
-    <%= current_user.confirmed_at if current_user %>
-    <br>
-    PARAMS:
-    <%= debug(params) if Rails.env.development? %>
-    <br>
-    PATH:
-    <%= request.fullpath if Rails.env.development? %>
-  </footer>
+      <br>
+      CURRENT_USER:
+      <%= current_user.inspect %>
+      <br>
+      STATUS:
+      <%= current_user.status.status_type if current_user %>
+      <br>
+      CONFIRMED_DATE:
+      <%= current_user.confirmed_at if current_user %>
+      <br>
+      PARAMS:
+      <%= debug(params) if Rails.env.development? %>
+      <br>
+      PATH:
+      <%= request.fullpath if Rails.env.development? %>
+    </footer>
+  </body>
 </html>
