@@ -1,4 +1,16 @@
 <h1>stock search</h1>
+
+<div>
+  <%= search_form_for @q do |f| %>
+
+  # Search if an associated articles.title starts with...
+  <%= f.label :company_name_or_ticker_start %>
+  <%= f.search_field :company_name_or_ticker_start %>
+
+  <%= f.submit %>
+<% end %>
+</div>
+
 <!-- for testing -->
 <% @stocks.each do |stock| %>
   Ticker:
@@ -7,6 +19,7 @@
   Company name:
   <%= stock.company_name %>
   <br>
+  <%= link_to "Get Stock Quote", stock_path(stock.id) %>
   <br>
 <% end %>
 <%= button_to "Sign Out", destroy_user_session_path, method: :delete %>
