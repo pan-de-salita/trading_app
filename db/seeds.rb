@@ -8,6 +8,7 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+# Create default admin account
 admin = User.new(
   email: 'admin@test.com',
   password: 'foobar',
@@ -18,3 +19,18 @@ admin = User.new(
 
 admin.skip_confirmation!
 admin.save
+
+# Populate Stocks table with data from company_list.csv
+require 'csv'
+
+CSV.foreach('db/seeds/company_list.csv', headers: true) do |row|
+  next unless !row['name'].nil? && row['assetType'] == 'Stock' && row['status'] == 'Active'
+
+  Stock.create(
+    ticker: row['symbol'],
+    company_name: row['name']
+  )
+
+  # For debugging only. Enjoy the Matrix simulation.
+  p Stock.last
+end
