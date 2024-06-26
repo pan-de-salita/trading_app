@@ -1,0 +1,9 @@
+<h1>Stocks</h1>
+<%= @stock.company_name %>
+<br>
+<br>
+<%= @stock.ticker %>
+<br>
+<br>
+Price <%= @stock_timeseries.time_series_daily.first[1].close  %>
+<br>
