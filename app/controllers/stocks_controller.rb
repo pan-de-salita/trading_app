@@ -11,5 +11,9 @@ class StocksController < ApplicationController
     # NOTE: ransack configs are done on the model level, i believe
   end
 
-  def show; end
+  def show
+    @stock = Stock.find(params[:id])
+    @stock_timeseries = Alphavantage::TimeSeries.new(symbol: "#{@stock.ticker}").daily(outputsize: 'compact')
+    # @stock_info = @stock_timeseries
+  end
 end
