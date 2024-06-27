@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
   <a class="navbar-brand" href="/">LOGO</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -7,7 +7,7 @@
   <div class="collapse navbar-collapse justify-content-between align-items-center" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <%= link_to "Home", root_path, class:"nav-link text-danger" %>
+        <%= link_to "Home", root_path, class:"nav-link text-primary font-weight-bold" %>
       </li>
       <li class="nav-item">
         <a class="nav-link text-secondary" href="#">Link</a>
@@ -44,10 +44,24 @@
       </div>
     </form>
   </div>
-  <div class="text-primary">user_icon</div>
+  <div class="text-primary ml-2">user_icon</div>
+</nav>
+
+<nav class="navbar navbar-dark bg-secondary shadow  text-truncate">
+  <% 6.times do |t| %>
+  <div class="m-2">
+  <span class="badge badge-pill badge-success">SMPL</span>
+  <span class="text-success">+0.4%</span>
+  </div>
+  <div class="m-2">
+  <span class="badge badge-pill badge-danger">LPMS</span>
+  <span class="text-danger">-0.2%</span>
+  </div>
+  <% end %>
 </nav>
 
 <!-- Button trigger modal -->
+<br>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
   Launch demo modal
 </button>
