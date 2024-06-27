@@ -6,7 +6,6 @@
 <br>
 <br>
 Price
-<%= @stock_timeseries.time_series_daily.first[1].close unless @stock_timeseries.nil? %>
 <br>
 <br>
 <% if @stock_news %>
@@ -25,4 +24,6 @@ Price
     <br>
     <br>
   <% end %>
+<% else %>
+  No news to show...
 <% end %>

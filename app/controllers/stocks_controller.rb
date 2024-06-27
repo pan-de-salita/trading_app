@@ -4,7 +4,8 @@ class StocksController < ApplicationController
   def index
     @q = Stock.ransack(params[:q])
     @stocks = params[:q] ? @q.result(distinct: true) : []
-    # initialize @stored_stocks and @stored_news
+
+    # NOTE: For debugging only
     return unless params[:q]
 
     @search_item = params[:q][:company_name_or_ticker_cont]
@@ -12,27 +13,32 @@ class StocksController < ApplicationController
 
   def show
     @stock = Stock.find(params[:id])
+    p @stock
+    p @stock.ticker
 
-    if @stock.data
-      stock_timeseries = Alphavantage::TimeSeries
-                         .new(symbol: @stock.ticker)
-                         .daily(outputsize: 'compact')
-      @stock.update(data: stock_timeseries.to_json || nil)
-    end
-    @stock_time_series = JSON.parse(@stock.data)
+    if @stock.data.nil? || @stock.updated_at.utc.strftime('%Y-%m-%d') != DateTime.now.strftime('%Y-%m-%d')
+      stock_timeseries = Alphavantage::TimeSeries.new(symbol: @stock.ticker).daily(outputsize: 'compact')
+      @stock.update(data: stock_timeseries.to_json) unless stock_timeseries.information
 
-    if @stock.news
-      stock_news = (Alphavantage::Client
-                   .new(function: 'NEWS_SENTIMENT', tickers: @stock.ticker)
-                   .json
-                   .feed || [])
-                   .first(10)
-      @stock.update(news: stock_news.to_json || nil)
+      p 'STOCK'
+      p @stock
+      p 'STOCK'
     end
-    @stock_news = JSON.parse(@stock.news)
+
+    if @stock.news.nil? || @stock.updated_at.utc.strftime('%Y-%m-%d') != DateTime.now.strftime('%Y-%m-%d')
+      stock_news = Alphavantage::Client.new(function: 'NEWS_SENTIMENT', tickers: @stock.ticker).json
+      @stock.update(news: stock_news.to_json) unless stock_news.information
+
+      p 'NEWS'
+      p @stock
+      p 'NEWS'
+    end
+
+    @stock_timeseries = JSON.parse(@stock.data) unless @stock.data.nil?
+    @stock_news = JSON.parse(@stock.news) unless @stock.news.nil?
 
     p 'OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO'
-    p @stock_time_series
+    p @stock_timeseries
     p @stock_news
     p 'OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO'
   end
@@ -40,10 +46,7 @@ class StocksController < ApplicationController
   private
 
   def set_general_news
-    @stock_news = (Alphavantage::Client
-                  .new(function: 'NEWS_SENTIMENT')
-                  .json
-                  .feed || [])
-                  .first(10)
+    general_news = Alphavantage::Client.new(function: 'NEWS_SENTIMENT').json
+    @general_news = general_news.information ? general_news.feed : nil
   end
 end
