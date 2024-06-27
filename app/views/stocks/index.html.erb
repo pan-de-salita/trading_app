@@ -1,14 +1,14 @@
 <h1>stock search</h1>
 
 <div>
-  <%= search_form_for @q do |f| %>
-
-  # Search if an associated articles.title starts with...
-  <%= f.label :company_name_or_ticker_start %>
-  <%= f.search_field :company_name_or_ticker_start %>
-
-  <%= f.submit %>
-<% end %>
+    <% if @q.present? %>
+      <%= search_form_for @q do |f| %>
+  <%# # Search if an associated articles.title starts with... %>
+      <%= f.label :company_name_or_ticker_start %>
+      <%= f.search_field :company_name_or_ticker_start %>
+      <%= f.submit class: "btn btn-primary" %>
+     <% end %>
+    <% end %>
 </div>
 
 <!-- for testing -->
@@ -22,7 +22,7 @@
   <%= link_to "Get Stock Quote", stock_path(stock.id) %>
   <br>
 <% end %>
-<%= button_to "Sign Out", destroy_user_session_path, method: :delete %>
+<%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-danger"  %>
 <%= link_to "Edit Account", edit_user_registration_path %>
 <%= link_to "Stocks", stocks_path %>
 <!-- WRITE THE SEARCH BAR HERE -->
