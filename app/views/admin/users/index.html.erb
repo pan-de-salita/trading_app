@@ -1,35 +1,68 @@
 <div>
-  <ul>
-    <%= "Users" %>
-    <% @users.each do |user| %>
-      <li>
+
+    <h1>Users</h1>
+   <table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Email</th>
+      <th scope="col">Role</th>
+      <th scope="col">Status</th>
+      <th scope="col">Confirmed?</th>
+      <th scope="col">Date Created</th>
+      <th scope="col">Approve User</th>
+      <th scope="col">Deny User</th>
+      <th scope="col">Delete User</th>
+    </tr>
+  </thead>
+   <tbody>
+  <% @users.each_with_index do |user, index| %>
+    <tr>
+      <th scope="row"><%= index+1 %></th>
+      <td>
+        <span class="text-lowercase text-monospace"><%= link_to "Edit", edit_admin_user_path(user) %></span>
         <%= user.email %>
-        <%= user.role %>
-        (<%= user.status.status_type %>)
-        <%= link_to "Edit", edit_admin_user_path(user) %>
-        <!-- Add mailer for deleting a user? -->
-        <%= button_to "Delete",
-        admin_user_path(user),
-        method: :delete,
-        data: {
-          confirm: "This process is irreversible. Continue?",
-        } %>
+      </td>
+            
+      <td><%= user.role %></td>
+      <td><%= user.status.status_type %></td>
+      <td><%= user.confirmed? %></td>
+      <td><%= user.created_at.strftime('%Y-%m-%d') %></td>
+
+       <td> 
         <%= button_to "Approve",
         admin_user_approve_trader_account_path(user),
+         class:"btn btn-success",
         method: :patch,
         disabled: user.status.approved? ? true : false,
         data: {
           confirm: "Approve this user?",
         } %>
+        </td>
+        <td>
         <%= button_to "Deny",
         admin_user_deny_trader_account_path(user),
+         class:"btn btn-primary",
         method: :patch,
         disabled: user.status.denied? ? true : false,
         data: {
           confirm: "Deny this user?",
         } %>
-      </li>
-    <% end %>
-  </ul>
+        </td>
+        <td>
+        <%= button_to "Delete", admin_user_path(user),
+          class:"btn btn-danger",
+        method: :delete,
+        data: {
+          confirm: "This process is irreversible. Continue?",
+        } %>
+        </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+
+
 </div>
 
