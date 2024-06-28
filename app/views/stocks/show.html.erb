@@ -7,23 +7,23 @@
 <br>
 <% if @stock_timeseries %>
   Price/Close:
-  <%= @stock_timeseries["time_series_daily"].first[1]["close"] %>
+  <%= @stock.price %>
   <br>
   <br>
   Open:
-  <%= @stock_timeseries["time_series_daily"].first[1]["open"] %>
+  <%= @stock.open %>
   <br>
   <br>
   High:
-  <%= @stock_timeseries["time_series_daily"].first[1]["high"] %>
+  <%= @stock.high %>
   <br>
   <br>
   Low:
-  <%= @stock_timeseries["time_series_daily"].first[1]["low"] %>
+  <%= @stock.low %>
   <br>
   <br>
   Volume:
-  <%= @stock_timeseries["time_series_daily"].first[1]["volume"] %>
+  <%= @stock.volume %>
   <br>
   <br>
 <% end %>
