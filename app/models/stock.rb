@@ -21,12 +21,16 @@ class Stock < ApplicationRecord
     stock_timeseries = Alphavantage::TimeSeries.new(symbol: ticker).daily(outputsize: 'compact')
     return if stock_timeseries.information
 
+    p "AAAAAAAAAA"
+    p stock_timeseries
+    p "AAAAAAAAAA"
+
     update(
-      price: stock_timeseries.time_series.daily.first[1].close,
-      open: stock_timeseries.time_series.daily.first[1].open,
-      high: stock_timeseries.time_series.daily.first[1].high,
-      low: stock_timeseries.time_series.daily.first[1].low,
-      volume: stock_timeseries.time_series.daily.first[1].volume,
+      price: stock_timeseries['time_series_daily'].first[1]['close'].to_f,
+      open: stock_timeseries['time_series_daily'].first[1]['open'].to_f,
+      high: stock_timeseries['time_series_daily'].first[1]['high'].to_f,
+      low: stock_timeseries['time_series_daily'].first[1]['low'].to_f,
+      volume: BigDecimal(stock_timeseries['time_series_daily'].first[1]['volume']),
       data: stock_timeseries.to_json
     )
   end
