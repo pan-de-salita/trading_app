@@ -10,6 +10,7 @@ class Admin::UsersController < ApplicationController
     @pending_users = @users.select { |user| user.status.pending? }
     @approved_users = @users.select { |user| user.status.approved? }
     @denied_users = @users.select { |user| user.status.denied? }
+
   end
 
   def new
