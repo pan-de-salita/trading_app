@@ -1,0 +1,12 @@
+$body-bg: #ffffff;
+$body-color: #1F1F1F;
+
+$theme-colors: (
+  "primary": #66999B,
+  "secondary": #FFF,
+  "dark":  #1F1F1F,
+  "danger": #FF1053,
+  "success": #51cb20
+);
+  
+@import "bootstrap";
