@@ -8,10 +8,7 @@ class StocksController < ApplicationController
 
   def show
     @stock = Stock.find(params[:id])
-
-    @stock.set_or_fetch_stock_data
-    @stock.set_or_fetch_stock_news
-
+    @stock.set_or_fetch_api_info_from_alphavantage
     @stock_timeseries = JSON.parse(@stock.data) unless @stock.data.nil?
     @stock_news = JSON.parse(@stock.news) unless @stock.news.nil?
   end

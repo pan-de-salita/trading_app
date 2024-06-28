@@ -10,19 +10,17 @@ class Stock < ApplicationRecord
     authorizable_ransackable_associations
   end
 
-  def set_or_fetch_stock_data
+  def set_or_fetch_api_info_from_alphavantage
     return unless data.nil? || updated_at.utc.strftime('%Y-%m-%d') != DateTime.now.strftime('%Y-%m-%d')
 
-    fetch_stock_information(:data)
-  end
+    fetch_api_information(:data)
 
-  def set_or_fetch_stock_news
     return unless news.nil? || updated_at.utc.strftime('%Y-%m-%d') != DateTime.now.strftime('%Y-%m-%d')
 
-    fetch_stock_information(:news)
+    fetch_api_information(:news)
   end
 
-  def fetch_stock_information(attr)
+  def fetch_api_information(attr)
     if attr == :data
       response = Alphavantage::TimeSeries.new(symbol: ticker).daily(outputsize: 'compact')
     elsif attr == :news
