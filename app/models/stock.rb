@@ -19,7 +19,16 @@ class Stock < ApplicationRecord
     return unless data.nil? || updated_at.utc.strftime('%Y-%m-%d') != DateTime.now.strftime('%Y-%m-%d')
 
     stock_timeseries = Alphavantage::TimeSeries.new(symbol: ticker).daily(outputsize: 'compact')
-    update(data: stock_timeseries.to_json) unless stock_timeseries.information
+    return if stock_timeseries.information
+
+    update(
+      price: stock_timeseries.time_series.daily.first[1].close,
+      open: stock_timeseries.time_series.daily.first[1].open,
+      high: stock_timeseries.time_series.daily.first[1].high,
+      low: stock_timeseries.time_series.daily.first[1].low,
+      volume: stock_timeseries.time_series.daily.first[1].volume,
+      data: stock_timeseries.to_json
+    )
   end
 
   def set_or_fetch_stock_news
