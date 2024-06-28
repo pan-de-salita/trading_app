@@ -10,7 +10,7 @@ class Stock < ApplicationRecord
     authorizable_ransackable_associations
   end
 
-  def set_of_fetch_from_alphavantage
+  def set_or_fetch_from_alphavantage
     set_or_fetch_stock_data
     set_or_fetch_stock_news
   end

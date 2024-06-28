@@ -1,5 +1,5 @@
 class StocksController < ApplicationController
-  before_action :set_general_news
+  # before_action :set_general_news
 
   def index
     @q = Stock.ransack(params[:q])
@@ -15,9 +15,9 @@ class StocksController < ApplicationController
 
   private
 
-  def set_general_news
-    general_news = Alphavantage::Client.new(function: 'NEWS_SENTIMENT').json
-    session[:general_news] = general_news['feed'].first(9) unless general_news.information
-    @general_news = !general_news.information ? JSON.parse(general_news)['feed'].first(9) : session[:general_news]
-  end
+  # def set_general_news
+  #   general_news = Alphavantage::Client.new(function: 'NEWS_SENTIMENT').json
+  #   session[:general_news] = general_news['feed'].first(9) unless general_news.information
+  #   @general_news = !general_news.information ? JSON.parse(general_news)['feed'].first(9) : session[:general_news]
+  # end
 end
