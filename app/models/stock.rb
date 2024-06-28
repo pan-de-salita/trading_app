@@ -21,10 +21,6 @@ class Stock < ApplicationRecord
     stock_timeseries = Alphavantage::TimeSeries.new(symbol: ticker).daily(outputsize: 'compact')
     return if stock_timeseries.information
 
-    p "AAAAAAAAAA"
-    p stock_timeseries
-    p "AAAAAAAAAA"
-
     update(
       price: stock_timeseries['time_series_daily'].first[1]['close'].to_f,
       open: stock_timeseries['time_series_daily'].first[1]['open'].to_f,
