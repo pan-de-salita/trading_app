@@ -10,23 +10,22 @@ class Stock < ApplicationRecord
     authorizable_ransackable_associations
   end
 
-  def set_or_fetch_api_info_from_alphavantage
-    return unless data.nil? || updated_at.utc.strftime('%Y-%m-%d') != DateTime.now.strftime('%Y-%m-%d')
-
-    fetch_api_information(:data)
-
-    return unless news.nil? || updated_at.utc.strftime('%Y-%m-%d') != DateTime.now.strftime('%Y-%m-%d')
-
-    fetch_api_information(:news)
+  def set_of_fetch_from_alphavantage
+    set_or_fetch_stock_data
+    set_or_fetch_stock_news
   end
 
-  def fetch_api_information(attr)
-    if attr == :data
-      response = Alphavantage::TimeSeries.new(symbol: ticker).daily(outputsize: 'compact')
-    elsif attr == :news
-      response = Alphavantage::Client.new(function: 'NEWS_SENTIMENT', tickers: ticker).json
-    end
+  def set_or_fetch_stock_data
+    return unless data.nil? || updated_at.utc.strftime('%Y-%m-%d') != DateTime.now.strftime('%Y-%m-%d')
 
-    update(attr: (attr == :data ? response.to_json : response.to_json.feed)) unless response['information']
+    stock_timeseries = Alphavantage::TimeSeries.new(symbol: ticker).daily(outputsize: 'compact')
+    update(data: stock_timeseries.to_json) unless stock_timeseries.information
+  end
+
+  def set_or_fetch_stock_news
+    return unless news.nil? || updated_at.utc.strftime('%Y-%m-%d') != DateTime.now.strftime('%Y-%m-%d')
+
+    stock_news = Alphavantage::Client.new(function: 'NEWS_SENTIMENT', tickers: ticker).json
+    update(news: stock_news.feed.to_json) unless stock_news.information
   end
 end
