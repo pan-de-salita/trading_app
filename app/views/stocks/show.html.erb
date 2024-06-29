@@ -68,19 +68,27 @@
       </div>
       <div class="modal-body">
         <%= form_with model: Transaction.new, local: true do |form| %>
-          <%= form.label "Price per share" %>
-          <%= form.number_field :share_price, value: @stock.price, disabled: true %>
+          
+          <fieldset disabled>
+            <%= form.label "Price per share" %>
+            <%= form.number_field :share_price, value: @stock.price %>
+          </fieldset>
 
           <%= form.label "Number of shares" %>
           <%= form.number_field :share_qty %>
 
-          <%= form.label "Total Price" %>
-          <%= form.number_field :amount, value: 0, disabled: true %>
+          <fieldset disabled>
+            <%= form.label "Total Price" %>
+            <%= form.number_field :amount, value: 0 %>
+          </fieldset>
 
           <% form.label :transaction_type %>
-          <%= form.hidden_field :transaction_type, value: "transaction" %>
+          <%= form.hidden_field :transaction_type, value: "buy" %>
 
-          <%= form.submit "Sign Up" %>
+          <% form.label :stock_id %>
+          <%= form.hidden_field :stock_id, value: @stock.id %>
+
+          <%= button_to "Submit", transactions_path, method: :post, class: "btn btn-primary" %>
         <% end %>
       </div>
       <div class="modal-footer">
