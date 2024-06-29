@@ -1,18 +1,25 @@
-<h1>Pages#home</h1>
 
-<% if current_user.present? %>
-  <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
-  <%= link_to "Edit Account", edit_user_registration_path %>
-  <%= link_to "Stocks", stocks_path %>
-
-  <% if current_user.admin? %>
-    <div>
+  <%# <% if current_user.admin? %>
+    <%# <div>
       <%= render "all_users" %>
-      <%= link_to "All Users", admin_users_path %>
-      <%= link_to "New User", new_admin_user_path %>
-      <%= link_to "Stocks", stocks_path %>
+      <%# <%= link_to "All Users", admin_users_path %>
+      <%# <%= link_to "New User", new_admin_user_path %>
+      <%# <%= link_to "Stocks", stocks_path %>
+    <%# </div> %>
+  <%# <% end %> 
+<% if current_user.present? %>
+  <div class="container d-inline-block align-items-center justify-content-center flex-grow-1 mw-100">
+    <%= render "layouts/carousel_imgs" %>
     </div>
-  <% end %>
+  
+
+  <div class="d-flex flex-column flex-shrink-0">
+    <button class="btn btn-primary">My Account</button>
+      <button class="btn btn-primary">Start Trading</button>
+        <button class="btn btn-primary">My Portfolio</button>
+          <button class="btn btn-primary">FAQ</button>
+  </div>
+
 
 <% else %>
   <%= button_to "Sign In", new_user_session_path %>

@@ -1,4 +1,4 @@
-<h1>stock search</h1>
+<h1 class="text-center mt-5">Stock Search</h1>
 
 <%= @stored_stock_timeseries %>
 <%= @stored_news %>
@@ -13,7 +13,7 @@
       <%= f.search_field :company_name_or_ticker_cont %>
       <%= f.submit class: "btn btn-primary" %>
      <% end %>
-    <% end %>
+  <% end %>
 </div>
 <% @stocks.each do |stock| %>
   Ticker:
@@ -45,7 +45,43 @@
     <br>
   <% end %>
 <% end %>
+<div class="container mt-5">
+  <% 9.times.each_slice(3) do |slice| %>
+    <div class="row my-4">
+      <% slice.each do %>
+        <div class="col-md-4">
+          <div class="card">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
 
-<%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-danger"  %>
-<%= link_to "Edit Account", edit_user_registration_path %>
-<%= link_to "Stocks", stocks_path %>
+<% button_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-danger"  %>
+<% link_to "Edit Account", edit_user_registration_path %>
+<% link_to "Stocks", stocks_path %>
+<!-- WRITE THE SEARCH BAR HERE -->
+<br>
+<!-- WRITE THE NEWS STUFF HERE -->
+<% @stock_news.each do |news| %>
+  <a href=<%= news[:url] %>>
+    <%= news[:source_domain] %>
+    <br>
+    <%= news[:title] %>
+    <br>
+    <%= DateTime.strptime(news[:time_published], "%Y%m%dT%H%M%S").strftime(
+      "%d/%m/%Y %H:%M:%S",
+    ) %>
+    <%= DateTime.strptime(news[:time_published], "%Y%m%dT%H%M%S").class %>
+    <%= DateTime.now %>
+  </a>
+  <br>
+  <br>
+<% end %>
