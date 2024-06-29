@@ -4,10 +4,6 @@ class TransactionsController < ApplicationController
     @transactions = current_user.transactions
   end
 
-  # def new
-
-  # end
-
   def create
     stock_price = Stock.find(transaction_params[:stock_id].to_i).price
     @transaction = current_user
