@@ -74,6 +74,9 @@
           <%= form.label "Number of shares" %>
           <%= form.number_field :share_qty %>
 
+          <%= form.label "Total Price" %>
+          <%= form.number_field :amount, value: 0, disabled: true %>
+
           <% form.label :transaction_type %>
           <%= form.hidden_field :transaction_type, value: "transaction" %>
 
