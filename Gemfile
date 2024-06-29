@@ -69,8 +69,8 @@ group :test do
   gem 'selenium-webdriver'
 end
 
-gem "devise", "~> 4.9"
 gem 'alphavantage'
+gem 'devise', '~> 4.9'
 gem 'dotenv'
 gem 'ransack'
 gem 'bootstrap', '~> 4.3.1'
