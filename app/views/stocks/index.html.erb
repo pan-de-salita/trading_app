@@ -23,29 +23,27 @@
   <%= stock.company_name %>
   <br>
   <div data-turbo-prefetch="false">
-    <%= link_to "Get Stock Quote",
-    stock_path(stock.id),
-    data: {
-      turbo_action: "replace",
-    } %>
+    <%= link_to "Get Stock Quote", stock_path(stock.id) %>
   </div>
   <br>
 <% end %>
 
-<% @stock_news.each do |news| %>
-  <a href=<%= news[:url] %>>
-    <%= news[:source_domain] %>
+<% if @general_news %>
+  <% @general_news.each do |news| %>
+    <a href=<%= news[:url] %>>
+      <%= news[:source_domain] %>
+      <br>
+      <%= news[:title] %>
+      <br>
+      <%= DateTime.strptime(news[:time_published], "%Y%m%dT%H%M%S").strftime(
+        "%d/%m/%Y %H:%M:%S",
+      ) %>
+      <%= DateTime.strptime(news[:time_published], "%Y%m%dT%H%M%S").class %>
+      <%= DateTime.now %>
+    </a>
     <br>
-    <%= news[:title] %>
     <br>
-    <%= DateTime.strptime(news[:time_published], "%Y%m%dT%H%M%S").strftime(
-      "%d/%m/%Y %H:%M:%S",
-    ) %>
-    <%= DateTime.strptime(news[:time_published], "%Y%m%dT%H%M%S").class %>
-    <%= DateTime.now %>
-  </a>
-  <br>
-  <br>
+  <% end %>
 <% end %>
 <div class="container mt-5">
   <% 9.times.each_slice(3) do |slice| %>

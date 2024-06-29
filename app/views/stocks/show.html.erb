@@ -5,24 +5,41 @@
 <%= @stock.ticker %>
 <br>
 <br>
-Price
-<%= @stock_timeseries.time_series_daily.first[1].close unless @stock_timeseries.nil? %>
-<br>
-<br>
+<% if @stock_timeseries %>
+  Price/Close:
+  <%= @stock.price %>
+  <br>
+  <br>
+  Open:
+  <%= @stock.open %>
+  <br>
+  <br>
+  High:
+  <%= @stock.high %>
+  <br>
+  <br>
+  Low:
+  <%= @stock.low %>
+  <br>
+  <br>
+  Volume:
+  <%= @stock.volume %>
+  <br>
+  <br>
+<% end %>
+
 <% if @stock_news %>
   <% @stock_news.each do |news| %>
-    <a href=<%= news[:url] %>>
-      <%= news[:source_domain] %>
+    <a href=<%= news["url"] %>>
+      <%= news["source_domain"] %>
       <br>
-      <%= news[:title] %>
+      <%= news["title"] %>
       <br>
-      <%= DateTime.strptime(news[:time_published], "%Y%m%dT%H%M%S").strftime(
-        "%d/%m/%Y %H:%M:%S",
-      ) %>
-      <%= DateTime.strptime(news[:time_published], "%Y%m%dT%H%M%S").class %>
-      <%= DateTime.now %>
+      <%= news["time_published"] %>
     </a>
     <br>
     <br>
   <% end %>
+<% else %>
+  The Alphavantage API isn't working at the moment...
 <% end %>
