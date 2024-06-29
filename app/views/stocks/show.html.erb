@@ -33,21 +33,37 @@
   <br>
 <% end %>
 
+
 <% if @stock_news %>
-  <% @stock_news.each do |news| %>
-    <a href=<%= news["url"] %>>
-      <%= news["source_domain"] %>
-      <br>
-      <%= news["title"] %>
-      <br>
-      <%= news["time_published"] %>
-    </a>
-    <br>
-    <br>
-  <% end %>
+  <div class="container mt-5">
+    <% @stock_news.each_slice(3) do |slice| %>
+      <div class="row my-4">
+        <% slice.each do |news| %>
+          <div class="col-md-4">
+            <div class="card">
+              <img src="<%= news['image_url'] %>" class="card-img-top" alt="<%= news['title'] %>">
+              <div class="card-body">
+                <h5 class="card-title"><%= news["title"] %></h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <p class="card-text"><small class="text-muted"><%= news["time_published"] %></small></p>
+              </div>
+                <div class="card-footer">
+                  <a href="#" class="d-inline-block stretched-link text-truncate mw-100"><%= news["url"] %></a>
+                </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 <% else %>
   The Alphavantage API isn't working at the moment...
 <% end %>
+
+
+
+
+
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
@@ -88,13 +104,13 @@
           <% form.label :stock_id %>
           <%= form.hidden_field :stock_id, value: @stock.id %>
 
-          <%= button_to "Submit", transactions_path, method: :post, class: "btn btn-primary" %>
-        <% end %>
+          
       </div>
       <div class="modal-footer">
-        <%= link_to "Confirm", new_transaction_path, class: "btn btn-primary" %> 
+     <%= button_to "Submit", transactions_path, method: :post, class: "btn btn-primary" %> 
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
+       <% end %>
     </div>
   </div>
 </div>

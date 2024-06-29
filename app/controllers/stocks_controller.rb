@@ -4,6 +4,10 @@ class StocksController < ApplicationController
   def index
     @q = Stock.ransack(params[:q])
     @stocks = params[:q] ? @q.result(distinct: true) : []
+    stock = Stock.all
+    news_articles = stock.map { |stock| JSON.parse(stock.news) unless stock.news.nil? }.compact.flatten
+    @random_news_articles = news_articles.sample(12)
+    console
   end
 
   def show
@@ -11,6 +15,7 @@ class StocksController < ApplicationController
     @stock.set_or_fetch_from_alphavantage
     @stock_timeseries = JSON.parse(@stock.data) unless @stock.data.nil?
     @stock_news = JSON.parse(@stock.news) unless @stock.news.nil?
+    console
   end
 
   private

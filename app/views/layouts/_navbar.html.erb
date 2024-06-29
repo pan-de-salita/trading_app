@@ -23,7 +23,7 @@
         <li class="nav-item">
            <%= link_to "Stocks", stocks_path, class:"nav-link" %>
         </li>
-       <% if current_user.admin? %>
+       <% if current_user.present? && current_user.admin? %>
       <li class="nav-item">
           <%= link_to "All Users", admin_users_path, class:"nav-link" %>
       </li>
@@ -38,32 +38,32 @@
      
     </ul>
    
-    <form class="form-inline my-2 my-lg-0">
+    <%# <form class="form-inline my-2 my-lg-0">
       <div class="input-group">
         <% if @q.present? %>
-        <%= search_form_for @q do |f| %>
-          <% f.label :company_name_or_ticker_start %>
-          <%= f.search_field :company_name_or_ticker_start, class:"form-control outline-light", placeholder:"Company Name..." %>
+        <%# <%= search_form_for @q do |f| %>
+          <%# <% f.label :company_name_or_ticker_start %>
+          <%# <% f.search_field :company_name_or_ticker_start, class:"form-control outline-light", placeholder:"Company Name..." %> 
         <%# <input type="search" class="form-control" placeholder="Company Name..." aria-label="Search" aria-describedby="button-addon2"> %>
-          <div class="input-group-append">
+          <%# <div class="input-group-append">
             <%= f.submit class: "btn btn-outline-light" %>
-        <% end %>
-        <% end %>
+        <%# <% end %>
+        <%# <% end %>
           <%# <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button> %>
-        </div>
-      </div>
-    </form>
+        <%# </div> %>
+      <%# </div>
+    </form> %>
   </div>
   <div class="text-primary ml-4 mr-4">user_icon</div>
   <% if current_user.present? %>
-  <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
+  <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-danger mx-2" %>
   <% else %>
-  <%= button_to "Sign In", new_user_session_path %>
-  <%= link_to "Create Account", new_user_registration_path %>
+  <%= button_to "Sign In", new_user_session_path, class: "btn btn-primary"  %>
+  <%= link_to "Create Account", new_user_registration_path, class: "btn btn-outline-primary mx-2"  %>
 <% end %>
 </nav>
 
-<nav class="navbar navbar-dark bg-secondary shadow  text-truncate">
+<nav class="navbar navbar-dark bg-light shadow  text-truncate">
   <% 6.times do |t| %>
   <div class="m-2">
   <span class="badge badge-pill badge-success">SMPL</span>
