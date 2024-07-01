@@ -15,6 +15,7 @@ module UsersHelper
       grid_size: grid_size_default,
       square_size: square_size_default
     )
-    image_tag("data:image/png;base64,#{fallback_identicon}", alt: 'default identicon', class: 'identicon')
+    image_tag("data:image/png;base64,#{fallback_identicon}", alt: 'default identicon',
+                                                             class: 'border border-white w-25 rounded-circle')
   end
 end
