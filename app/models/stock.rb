@@ -19,9 +19,7 @@ class Stock < ApplicationRecord
     # Prevent calling when the following are true:
     # - Stock has data
     # - Stock's last update is the same as current date
-    if data.present? && JSON.parse(stock.data)['meta_data']['last_refreshed'] == DateTime.now.strftime('%Y-%m-%d')
-      return
-    end
+    return if data.present? && JSON.parse(data)['meta_data']['last_refreshed'] == DateTime.now.strftime('%Y-%m-%d')
 
     stock_timeseries = Alphavantage::TimeSeries.new(symbol: ticker).daily(outputsize: 'compact')
     return if stock_timeseries.information
