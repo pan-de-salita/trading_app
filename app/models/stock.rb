@@ -16,14 +16,21 @@ class Stock < ApplicationRecord
   end
 
   def set_or_fetch_stock_data
-    if !data.nil? || updated_at.utc.strftime('%Y-%m-%d') == DateTime.now.strftime('%Y-%m-%d')
-      puts "Not fetching data"
-      return
+    p 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+    p 'trying to fetch data'
+
+    # NOTE: problematic clause:
+    unless data.nil? || updated_at.utc.strftime('%Y-%m-%d') != DateTime.now.strftime('%Y-%m-%d')
+      p 'not fetching data'
+      p 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+
     end
 
     stock_timeseries = Alphavantage::TimeSeries.new(symbol: ticker).daily(outputsize: 'compact')
     return if stock_timeseries.information
 
+    p 'fetched data; updating stock'
+    p 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
     update(
       price: stock_timeseries['time_series_daily'].first[1]['close'].to_f,
       open: stock_timeseries['time_series_daily'].first[1]['open'].to_f,

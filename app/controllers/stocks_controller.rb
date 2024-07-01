@@ -1,12 +1,16 @@
+# frozen_string_literal: true
+
 class StocksController < ApplicationController
-  # before_action :set_general_news
+  GENERAL_NEWS = Alphavantage::Client.new(function: 'NEWS_SENTIMENT').json.freeze
 
   def index
+    p GENERAL_NEWS
     @q = Stock.ransack(params[:q])
     @stocks = params[:q] ? @q.result(distinct: true) : []
-    stock = Stock.all
-    news_articles = stock.map { |stock| JSON.parse(stock.news) unless stock.news.nil? }.compact.flatten
-    @random_news_articles = news_articles.sample(12)
+
+    # news_articles = Stock.all.map { |stock| JSON.parse(stock.news) unless stock.news.nil? }.compact.flatten
+    # @random_news_articles = news_articles.sample(12)
+    @random_news_articles = GENERAL_NEWS.sample(12)
     console
   end
 
@@ -17,12 +21,4 @@ class StocksController < ApplicationController
     @stock_news = JSON.parse(@stock.news) unless @stock.news.nil?
     console
   end
-
-  private
-
-  # def set_general_news
-  #   general_news = Alphavantage::Client.new(function: 'NEWS_SENTIMENT').json
-  #   session[:general_news] = general_news['feed'].first(9) unless general_news.information
-  #   @general_news = !general_news.information ? JSON.parse(general_news)['feed'].first(9) : session[:general_news]
-  # end
 end
