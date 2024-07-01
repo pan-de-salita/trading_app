@@ -29,21 +29,23 @@
 <% end %>
 
 <div class="container mt-5">
-  <% @randome_news_articles.each do |news| %>
-    <div class="row my-4">
-      <div class="col-md-4">
-        <div class="card">
-          <img src="..." class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title"><%= news["title"] %></h5>
-            <p class="card-text">This is a longer card with supporting text below as a natural
-              lead-in to additional content. This content is a little bit
-              longer.</p>
-            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+  <% if @random_news_articles %>
+    <% @random_news_articles.each do |news| %>
+      <div class="row my-4">
+        <div class="col-md-4">
+          <div class="card">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title"><%= news["title"] %></h5>
+              <p class="card-text">This is a longer card with supporting text below as a natural
+                lead-in to additional content. This content is a little bit
+                longer.</p>
+              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    <% end %>
   <% end %>
 </div>
 
