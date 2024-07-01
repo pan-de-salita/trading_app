@@ -16,7 +16,10 @@ class Stock < ApplicationRecord
   end
 
   def set_or_fetch_stock_data
-    return unless data.nil? || updated_at.utc.strftime('%Y-%m-%d') != DateTime.now.strftime('%Y-%m-%d')
+    if !data.nil? || updated_at.utc.strftime('%Y-%m-%d') == DateTime.now.strftime('%Y-%m-%d')
+      puts "Not fetching data"
+      return
+    end
 
     stock_timeseries = Alphavantage::TimeSeries.new(symbol: ticker).daily(outputsize: 'compact')
     return if stock_timeseries.information
