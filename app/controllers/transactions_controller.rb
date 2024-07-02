@@ -1,5 +1,5 @@
 class TransactionsController < ApplicationController
-  before_action :authorize_confirmed_trader!
+  before_action :check_trader_approved?
 
   def index
     @transactions = current_user.transactions

@@ -1,5 +1,5 @@
 class PortfolioController < ApplicationController
-  before_action :authorize_confirmed_trader!
+  before_action :check_trader_approved?
 
   def index
     @stocks = current_user.stocks
@@ -7,4 +7,3 @@ class PortfolioController < ApplicationController
     console
   end
 end
-

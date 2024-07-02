@@ -1,8 +1,7 @@
 class StocksController < ApplicationController
-  before_action :authorize_trader_of_any_confirmation_type!
+  before_action :check_trader_confirmed?
 
   def index
-    p authorize_trader_of_any_confirmation_type!
     @q = Stock.ransack(params[:q])
     @stocks = params[:q] ? @q.result(distinct: true) : []
 

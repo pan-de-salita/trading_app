@@ -12,8 +12,8 @@ class Transaction < ApplicationRecord
   }
 
   def calc_gains_or_losses
-    stock = Stock.find(stock.id)
-    updated_stock = stock.set_or_fetch_stock_data
+    updated_stock = Stock.find(stock.id)
+    updated_stock.set_or_fetch_stock_data
 
     share_qty * (share_price - updated_stock.price)
   end

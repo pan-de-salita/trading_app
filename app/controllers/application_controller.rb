@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
-  helper_method :authorize_trader_of_any_confirmation_type!
-  helper_method :authorize_confirmed_trader!
+  helper_method :check_trader_confirmed?
+  helper_method :check_trader_approved?
 
   # NOTE: Devise Sessions Controller override:
   # - if admin, redirect to traders dashboard
@@ -16,15 +16,24 @@ class ApplicationController < ActionController::Base
       end
   end
 
-  def authorize_trader_of_any_confirmation_type!
-    return if current_user.present? && current_user.trader?
+  def check_trader_confirmed?
+    unless current_user.present? &&
+           current_user.active_for_authentication? &&
+           current_user.trader?
+      redirect_to root_path
+    end
 
-    redirect_to root_path
+    true
   end
 
-  def authorize_confirmed_trader!
-    return if current_user.present? && current_user.active_for_authentication? && current_user.trader?
+  def check_trader_approved?
+    unless current_user.present? &&
+           current_user.active_for_authentication? &&
+           current_user.trader? &&
+           current_user.status.approved?
+      redirect_to stocks_path
+    end
 
-    redirect_to root_path
+    true
   end
 end
