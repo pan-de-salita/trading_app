@@ -17,23 +17,19 @@ class ApplicationController < ActionController::Base
   end
 
   def check_trader_confirmed?
-    unless current_user.present? &&
-           current_user.active_for_authentication? &&
-           current_user.trader?
-      redirect_to root_path
-    end
+    return if current_user.present? &&
+              current_user.active_for_authentication? &&
+              current_user.trader?
 
-    true
+    redirect_to root_path
   end
 
   def check_trader_approved?
-    unless current_user.present? &&
-           current_user.active_for_authentication? &&
-           current_user.trader? &&
-           current_user.status.approved?
-      redirect_to stocks_path
-    end
+    return if current_user.present? &&
+              current_user.active_for_authentication? &&
+              current_user.trader? &&
+              current_user.status.approved?
 
-    true
+    redirect_to stocks_path
   end
 end
