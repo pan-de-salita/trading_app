@@ -6,4 +6,8 @@ class PortfolioController < ApplicationController
     @transactions = current_user.transactions
     console
   end
+
+  def show
+    @stock = Stock.find(params[:id])
+  end
 end
