@@ -18,13 +18,12 @@
         <strong>Average Price:</strong>
           <%= stock.transactions.avg_price %>
         </ul>
-      <li>
+       <li>
         <strong>Gains/Losses:</strong>
-        <ul>
-          <% stock.transactions.each do |transaction| %>
-            <li><%= transaction.calc_gains_or_losses %></li>
-          <% end %>
-        </ul>
+        <%= stock
+          .transactions
+          .map(&:calc_gains_or_losses)
+          .reduce { |acc, curr| acc + curr } / stock.transactions.length %>
       </li>
     <% end %>
 
