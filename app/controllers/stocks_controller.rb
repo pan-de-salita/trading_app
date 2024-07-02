@@ -1,7 +1,8 @@
-# frozen_string_literal: true
-
 class StocksController < ApplicationController
+  before_action :authorize_trader_of_any_confirmation_type!
+
   def index
+    p authorize_trader_of_any_confirmation_type!
     @q = Stock.ransack(params[:q])
     @stocks = params[:q] ? @q.result(distinct: true) : []
 

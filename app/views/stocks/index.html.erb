@@ -29,7 +29,7 @@
 <% end %>
 
 <div class="card-deck container mt-5 d-flex flex-wrap">
-  <% if @random_news_articles.feed %>
+  <% if @random_news_articles %>
     <% @random_news_articles.feed.first(12).each do |news| %>
       <div class="my-4">
         <div class="col-md-4">

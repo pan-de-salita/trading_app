@@ -1,4 +1,6 @@
 class TransactionsController < ApplicationController
+  before_action :authorize_confirmed_trader!
+
   def index
     @transactions = current_user.transactions
   end
