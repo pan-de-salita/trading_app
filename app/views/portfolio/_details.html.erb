@@ -16,6 +16,10 @@
         <% Stock.find(stock.id).set_or_fetch_stock_data %>
         <%= Stock.find(stock.id).price %>
       </li>
+      <li>
+        <strong>No. Of Shares Owned:</strong>
+        <%= stock.transactions.total_shares %>
+      </li>
       <ul>
         <strong>Average Price:</strong>
         <%= stock.transactions.avg_price %>
@@ -31,3 +35,4 @@
 
   </ul>
 </div>
+

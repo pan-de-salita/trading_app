@@ -18,6 +18,15 @@ class Transaction < ApplicationRecord
     share_qty * (share_price - updated_stock.price)
   end
 
+  def self.total_shares
+    buy_transactions = where(transaction_type: :buy) || 0
+    sell_transactions = where(transaction_type: :sell) || 0
+
+    total_shares = buy_transactions.sum('share_qty') - sell_transactions.sum('share_qty')
+
+    total_shares
+  end
+
   def self.avg_price
     transactions = where(transaction_type: :buy) || 0
 
