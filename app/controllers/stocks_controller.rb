@@ -1,16 +1,13 @@
 # frozen_string_literal: true
 
 class StocksController < ApplicationController
-  GENERAL_NEWS = Alphavantage::Client.new(function: 'NEWS_SENTIMENT').json.freeze
-
   def index
-    p GENERAL_NEWS
     @q = Stock.ransack(params[:q])
     @stocks = params[:q] ? @q.result(distinct: true) : []
 
-    # news_articles = Stock.all.map { |stock| JSON.parse(stock.news) unless stock.news.nil? }.compact.flatten
-    # @random_news_articles = news_articles.sample(12)
-    @random_news_articles = GENERAL_NEWS.sample(12)
+    @general_news = Rails.cache.fetch('general_news', expires_in: 12.hours) do
+      Alphavantage::Client.new(function: 'NEWS_SENTIMENT').json
+    end
     console
   end
 

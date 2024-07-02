@@ -28,19 +28,22 @@
   <br>
 <% end %>
 
-<div class="container mt-5">
-  <% if @random_news_articles %>
-    <% @random_news_articles.each do |news| %>
-      <div class="row my-4">
+<div class="card-deck container mt-5 d-flex flex-wrap">
+  <% if @random_news_articles.feed %>
+    <% @random_news_articles.feed.first(12).each do |news| %>
+      <div class="my-4">
         <div class="col-md-4">
           <div class="card">
-            <img src="..." class="card-img-top" alt="...">
+            <img
+              src="<%= news[:banner_image] %>"
+              class="card-img-top"
+              alt="news banner image"
+            >
             <div class="card-body">
               <h5 class="card-title"><%= news["title"] %></h5>
-              <p class="card-text">This is a longer card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit
-                longer.</p>
-              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+              <p class="card-text"><%= news["summary"] %></p>
+              <p class="card-text"><small class="text-muted"><%= news["source_domain"] %></small></p>
+              <p class="card-text"><small class="text-muted"><%= news["time_published"] %></small></p>
             </div>
           </div>
         </div>

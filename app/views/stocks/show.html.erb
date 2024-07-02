@@ -33,10 +33,9 @@
   <br>
 <% end %>
 
-
-<% if @stock_news %>
+<% if @general_news %>
   <div class="container mt-5">
-    <% @stock_news.each_slice(3) do |slice| %>
+    <% @general_news.each_slice(3) do |slice| %>
       <div class="row my-4">
         <% slice.each do |news| %>
           <div class="col-md-4">
@@ -59,11 +58,6 @@
 <% else %>
   The Alphavantage API isn't working at the moment...
 <% end %>
-
-
-
-
-
 
 <!-- Button trigger modal -->
 <% if @stock.price %>
