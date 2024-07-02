@@ -12,19 +12,9 @@ class Transaction < ApplicationRecord
   }
 
   def calc_gains_or_losses
-    # ask team what variable stores current day values
-    updated_stock = Stock.find(stock.id)
-    updated_stock.set_or_fetch_stock_data
-    p '<----------------------->'
-    p 'PRE-FETCH'
-    p Stock.find(stock.id).price
-    p Stock.find(stock.id).updated_at
+    stock = Stock.find(stock.id)
+    updated_stock = stock.set_or_fetch_stock_data
 
-    p 'POST-FETCH'
-    p updated_stock
-    p Stock.find(stock.id).price
-    p Stock.find(stock.id).updated_at
-    p '<----------------------->'
     share_qty * (share_price - updated_stock.price)
   end
 
