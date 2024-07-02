@@ -1,3 +1,4 @@
+<%= render "graph" %>
 <h1>Specific Stock</h1>
 
 
@@ -27,6 +28,7 @@
     Sell Stock
 </button>
 
+<%= render "transaction_history" %>
 
 <!-- Modal -->
       <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -49,7 +51,7 @@
                 </fieldset>
 
                 <%= form.label "Number of shares" %>
-                <%= form.number_field :share_qty, value: @stock.transactions.total_shares, max: @stock.transactions.total_shares  %>
+                <%= form.number_field :share_qty, placeholder: "Maximum of #{@stock.transactions.total_shares}", max: @stock.transactions.total_shares  %>
 
                 <fieldset disabled>
                   <%= form.label "Total Earnings" %>

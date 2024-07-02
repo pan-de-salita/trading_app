@@ -8,6 +8,8 @@ class PortfolioController < ApplicationController
   end
 
   def show
+    @stocks = current_user.stocks
+    @transactions = current_user.transactions
     @stock = Stock.find(params[:id])
   end
 end
