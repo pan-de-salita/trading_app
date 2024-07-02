@@ -28,29 +28,37 @@
   <br>
 <% end %>
 
-<div class="card-deck container mt-5 d-flex flex-wrap">
-  <% if @random_news_articles %>
-    <% @random_news_articles.feed.first(12).each do |news| %>
-      <div class="my-4">
-        <div class="col-md-4">
-          <div class="card">
-            <img
-              src="<%= news[:banner_image] %>"
-              class="card-img-top"
-              alt="news banner image"
-            >
-            <div class="card-body">
-              <h5 class="card-title"><%= news["title"] %></h5>
-              <p class="card-text"><%= news["summary"] %></p>
-              <p class="card-text"><small class="text-muted"><%= news["source_domain"] %></small></p>
-              <p class="card-text"><small class="text-muted"><%= news["time_published"] %></small></p>
+<% if @general_news && @general_news.information.nil? %>
+  <div class="container mt-5 d-flex flex-wrap">
+    <% @general_news.each_slice(3) do |slice| %>
+      <div class="row my-4">
+        <% slice.each do |news| %>
+          <div class="col-md-4">
+            <div class="card">
+              <img
+                src="<%= news['banner_image'] %>"
+                class="card-img-top"
+                alt="<%= news['title'] %>"
+              >
+              <div class="card-body">
+                <h5 class="card-title"><%= news["title"] %></h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural
+                  lead-in to additional content. This content is a little bit
+                  longer.</p>
+                <p class="card-text"><small class="text-muted"><%= news["time_published"] %></small></p>
+              </div>
+              <div class="card-footer">
+                <a href="#" class="d-inline-block stretched-link text-truncate mw-100"><%= news["url"] %></a>
+              </div>
             </div>
           </div>
-        </div>
+        <% end %>
       </div>
     <% end %>
-  <% end %>
-</div>
+  </div>
+<% else %>
+  The Alphavantage API isn't working at the moment...
+<% end %>
 
 <% button_to "Sign Out",
 destroy_user_session_path,

@@ -19,7 +19,8 @@ class Stock < ApplicationRecord
     # Prevent calling when the following are true:
     # - Stock has data
     # - Stock's last update is the same as current date
-    return if data.present? && JSON.parse(data)['meta_data']['last_refreshed'] == DateTime.now.strftime('%Y-%m-%d')
+    return if data.present? &&
+              JSON.parse(data)['meta_data']['last_refreshed'] == DateTime.now.strftime('%Y-%m-%d')
 
     stock_timeseries = Alphavantage::TimeSeries.new(symbol: ticker).daily(outputsize: 'compact')
     return if stock_timeseries.information
@@ -39,7 +40,12 @@ class Stock < ApplicationRecord
   end
 
   def set_or_fetch_stock_news
-    return if news.present? && updated_at.utc.strftime('%Y-%m-%d') != DateTime.now.strftime('%Y-%m-%d')
+    # Prevent calling when the following are true:
+    # - Stock has news
+    # - Stock's last update is the same as current date
+    return if news.present? &&
+              DateTime.strptime(JSON.parse(news).first['time_published'],
+                                '%Y%m%dT%H%M%S').strftime('%Y-%m-%d') == DateTime.now.strftime('%Y-%m-%d')
 
     stock_news = Alphavantage::Client.new(function: 'NEWS_SENTIMENT', tickers: ticker).json
     update(news: stock_news.feed.to_json) unless stock_news.information

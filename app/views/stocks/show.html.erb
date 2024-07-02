@@ -26,21 +26,23 @@
   <%= @stock.volume %>
   <br>
   <br>
+  <% if @stock.price && current_user.status.approved? %>
   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
     Buy this stock
   </button>
+<% end %>
   <br>
   <br>
 <% end %>
 
-<% if @general_news %>
+<% if @stock_news %>
   <div class="container mt-5">
-    <% @general_news.each_slice(3) do |slice| %>
+    <% @stock_news.each_slice(3) do |slice| %>
       <div class="row my-4">
         <% slice.each do |news| %>
           <div class="col-md-4">
             <div class="card">
-              <img src="<%= news['image_url'] %>" class="card-img-top" alt="<%= news['title'] %>">
+              <img src="<%= news['banner_image'] %>" class="card-img-top" alt="<%= news['title'] %>">
               <div class="card-body">
                 <h5 class="card-title"><%= news["title"] %></h5>
                 <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
@@ -57,13 +59,6 @@
   </div>
 <% else %>
   The Alphavantage API isn't working at the moment...
-<% end %>
-
-<!-- Button trigger modal -->
-<% if @stock.price %>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-  Buy
-</button>
 <% end %>
 
 <!-- Modal -->
