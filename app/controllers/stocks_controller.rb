@@ -7,7 +7,7 @@ class StocksController < ApplicationController
 
     @general_news = Rails.cache.fetch('general_news', expires_in: 12.hours) do
       response = Alphavantage::Client.new(function: 'NEWS_SENTIMENT').json
-      response.feed.first(12) unless response.information
+      response["feed"].first(12) unless response["information"]
     end
     console
   end
