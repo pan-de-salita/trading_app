@@ -31,6 +31,7 @@
           .map(&:calc_gains_or_losses)
           .reduce { |acc, curr| acc + curr } / stock.transactions.length %>
       </li>
+      <% end %>
   </ul>
 </div>
 
