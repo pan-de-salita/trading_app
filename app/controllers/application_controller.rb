@@ -1,4 +1,7 @@
 class ApplicationController < ActionController::Base
+  helper_method :check_trader_confirmed?
+  helper_method :check_trader_approved?
+
   # NOTE: Devise Sessions Controller override:
   # - if admin, redirect to traders dashboard
   # - if user, redirect to stock search page (stocks_path)
@@ -11,5 +14,22 @@ class ApplicationController < ActionController::Base
       else
         super
       end
+  end
+
+  def check_trader_confirmed?
+    return if current_user.present? &&
+              current_user.active_for_authentication? &&
+              current_user.trader?
+
+    redirect_to root_path
+  end
+
+  def check_trader_approved?
+    return if current_user.present? &&
+              current_user.active_for_authentication? &&
+              current_user.trader? &&
+              current_user.status.approved?
+
+    redirect_to stocks_path
   end
 end

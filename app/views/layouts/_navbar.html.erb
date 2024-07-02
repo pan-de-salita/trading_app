@@ -23,9 +23,6 @@
         <li class="nav-item">
            <%= link_to "Stocks", stocks_path, class:"nav-link" %>
         </li>
-        <li class="nav-item">
-           <%= link_to "Portfolio", portfolio_index_path , class:"nav-link" %>
-        </li>
        <% if current_user.present? && current_user.admin? %>
       <li class="nav-item">
           <%= link_to "All Users", admin_users_path, class:"nav-link" %>
@@ -57,7 +54,9 @@
       <%# </div>
     </form> %>
   </div>
-  <div class="text-primary ml-4 mr-4">user_icon</div>
+  <div class="d-flex flex-row-reverse mr-2">
+    <%= identicon_for(current_user) if current_user.present? %>
+  </div>
   <% if current_user.present? %>
   <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-danger mx-2" %>
   <% else %>

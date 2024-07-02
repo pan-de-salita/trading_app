@@ -70,8 +70,9 @@ group :test do
 end
 
 gem 'alphavantage'
+gem 'bootstrap', '~> 4.3.1'
 gem 'devise', '~> 4.9'
 gem 'dotenv'
-gem 'ransack'
-gem 'bootstrap', '~> 4.3.1'
 gem 'jquery-rails'
+gem 'ransack'
+gem 'ruby_identicon'

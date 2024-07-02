@@ -3,22 +3,24 @@
   <ul>
     <% @stocks.uniq(&:ticker).each do |stock| %>
       <li>
-        <strong>Ticker:</strong> <%= stock.ticker %>
+        <strong>Ticker:</strong>
+        <%= stock.ticker %>
       </li>
       <li>
-        <strong>Company Name:</strong> <%= stock.company_name %>
+        <strong>Company Name:</strong>
+        <%= stock.company_name %>
       </li>
       <%# ask team current price variable for model %>
       <li>
-        <strong>Current Price:</strong> 
+        <strong>Current Price:</strong>
         <% Stock.find(stock.id).set_or_fetch_stock_data %>
-        <%= Stock.find(stock.id).price %> 
+        <%= Stock.find(stock.id).price %>
       </li>
       <ul>
         <strong>Average Price:</strong>
-          <%= stock.transactions.avg_price %>
-        </ul>
-       <li>
+        <%= stock.transactions.avg_price %>
+      </ul>
+      <li>
         <strong>Gains/Losses:</strong>
         <%= stock
           .transactions
