@@ -6,7 +6,8 @@ class StocksController < ApplicationController
     @stocks = params[:q] ? @q.result(distinct: true) : []
 
     @general_news = Rails.cache.fetch('general_news', expires_in: 12.hours) do
-      Alphavantage::Client.new(function: 'NEWS_SENTIMENT').json
+      response = Alphavantage::Client.new(function: 'NEWS_SENTIMENT').json
+      response.feed unless response.information
     end
     console
   end
