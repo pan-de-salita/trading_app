@@ -28,7 +28,7 @@
   <br>
 <% end %>
 
-<% if @general_news && @general_news.information.nil? %>
+<% if @general_news %>
   <div class="container mt-5 d-flex flex-wrap">
     <% @general_news.each_slice(3) do |slice| %>
       <div class="row my-4">
@@ -48,7 +48,7 @@
                 <p class="card-text"><small class="text-muted"><%= news["time_published"] %></small></p>
               </div>
               <div class="card-footer">
-                <a href="#" class="d-inline-block stretched-link text-truncate mw-100"><%= news["url"] %></a>
+                <a href=<%= "#{news["url"]}"%> class="d-inline-block stretched-link text-truncate mw-100"><%= news["url"] %></a>
               </div>
             </div>
           </div>
