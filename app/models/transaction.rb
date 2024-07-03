@@ -17,13 +17,10 @@ class Transaction < ApplicationRecord
 
   def self.avg_price
     transactions = where(transaction_type: :buy) || 0
-
     total_cost = transactions.sum('share_qty * share_price')
     total_shares = transactions.sum('share_qty')
 
-    return 0 if total_shares.zero?
-
-    total_cost / total_shares
+    total_shares.zero? ? 0 : (total_cost / total_shares)
   end
 
   def self.net_value; end
