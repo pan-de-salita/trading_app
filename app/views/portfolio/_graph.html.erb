@@ -1,3 +1,21 @@
+<div id="loading-indicator" style="display:<%= @loading ? 'block' : 'none' %>;">
+  testing
+</div>
+
+<pre><%= @formatted_data.inspect %></pre>
+
 <div>
-    <h1>Graph</h1>
+  <h1>Graph</h1>
+<%= candlestick_chart(
+  @combined_data,
+  class: 'box',
+  theme: 'roma',
+  options: {
+    xAxis: {
+      axisTick: {
+        alignWithLabel: true
+      }
+    }
+  })
+%>
 </div>
