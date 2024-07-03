@@ -16,11 +16,11 @@
       </li>
       <li>
         <strong>No. Of Shares Owned:</strong>
-        <%= stock.transactions.total_shares %>
+        <%= Transaction.total_shares(current_user.id, stock.id) %>
       </li>
       <li>
         <strong>Average Price:</strong>
-        <%= stock.transactions.avg_price %>
+        <%= Transaction.avg_price(current_user.id, stock.id) %>
       </li>
       <li>
         <strong>Gains/Losses:</strong>
@@ -32,6 +32,3 @@
     <% end %>
   </ul>
 </div>
-
-
-

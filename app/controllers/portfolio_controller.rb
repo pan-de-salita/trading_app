@@ -14,7 +14,7 @@ class PortfolioController < ApplicationController
   private
 
   def set_user_stocks_with_positive_shares
-    @stocks = current_user.stocks.with_positive_total_shares.each(&:set_or_fetch_stock_data)
+    @stocks = Stock.with_positive_total_shares(current_user.id).each(&:set_or_fetch_stock_data)
   end
 
   def set_user_transactions

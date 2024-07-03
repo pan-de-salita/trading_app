@@ -10,8 +10,10 @@ class Stock < ApplicationRecord
     authorizable_ransackable_associations
   end
 
-  def self.with_positive_total_shares
-    select { |s| s.transactions.total_shares.positive? }
+  def self.with_positive_total_shares(user_id = nil)
+    return unless user_id
+
+    User.find(user_id).stocks.select { |s| s.transactions.total_shares(user_id, s.id).positive? }
   end
 
   def set_or_fetch_from_alphavantage
