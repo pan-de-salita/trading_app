@@ -10,11 +10,9 @@
         <strong>Company Name:</strong>
         <%= stock.company_name %>
       </li>
-      <%# ask team current price variable for model %>
       <li>
         <strong>Current Price:</strong>
-        <% Stock.find(stock.id).set_or_fetch_stock_data %>
-        <%= Stock.find(stock.id).price %>
+        <%= stock.price %>
       </li>
       <li>
         <strong>No. Of Shares Owned:</strong>
@@ -28,10 +26,10 @@
         <strong>Gains/Losses:</strong>
         <%= stock
           .transactions
-          .map(&:calc_gains_or_losses)
-          .reduce { |acc, curr| acc + curr } / stock.transactions.length %>
+          .reduce(0) { |total, transaction| total + transaction.calc_gains_or_losses } /
+          stock.transactions.count %>
       </li>
-      <% end %>
+    <% end %>
   </ul>
 </div>
 

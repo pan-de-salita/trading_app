@@ -12,10 +12,7 @@ class Transaction < ApplicationRecord
   }
 
   def calc_gains_or_losses
-    updated_stock = Stock.find(stock.id)
-    updated_stock.set_or_fetch_stock_data
-
-    share_qty * (share_price - updated_stock.price)
+    share_qty * (share_price - Stock.find(stock.id).price)
   end
 
   def self.total_shares
@@ -29,13 +26,10 @@ class Transaction < ApplicationRecord
 
   def self.avg_price
     transactions = where(transaction_type: :buy) || 0
-
     total_cost = transactions.sum('share_qty * share_price')
     total_shares = transactions.sum('share_qty')
 
-    return 0 if total_shares.zero?
-
-    total_cost / total_shares
+    total_shares.zero? ? 0 : (total_cost / total_shares)
   end
 
   def self.net_value; end
