@@ -10,11 +10,9 @@
         <strong>Company Name:</strong>
         <%= stock.company_name %>
       </li>
-      <%# ask team current price variable for model %>
       <li>
         <strong>Current Price:</strong>
-        <% Stock.find(stock.id).set_or_fetch_stock_data %>
-        <%= Stock.find(stock.id).price %>
+        <%= stock.price %>
       </li>
       <ul>
         <strong>Average Price:</strong>
@@ -28,6 +26,5 @@
           .reduce { |acc, curr| acc + curr } / stock.transactions.length %>
       </li>
     <% end %>
-
   </ul>
 </div>
