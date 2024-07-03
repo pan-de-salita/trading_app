@@ -40,7 +40,10 @@ class Transaction < ApplicationRecord
         hash[:total_shares] = hash[:total_shares] - transaction.share_qty
       end
 
-      hash[:avg_price] = 0.0 if hash[:total_shares] <= 0 && idx.positive?
+      if hash[:total_shares] <= 0 && idx.positive?
+        hash[:avg_price] = 0.0
+        hash[:counter] = 0
+      end
     end[:avg_price]
   end
 
