@@ -22,8 +22,7 @@ class TransactionsController < ApplicationController
       redirect_to stock_path(@transaction.stock_id), notice: 'Stock successfully bought.'
     when 'sell'
       # NOTE: The Sell transaction_type is accessible only through Portfolio views.
-      # Stock price is updated upon visiting any view linked to the portfolio
-      # controller.
+      # For every intended Sell attempt, its corresponding stock price is automatically updated.
       redirect_to portfolio_index_path, notice: 'Stock successfully sold.'
     end
   end
