@@ -1,0 +1,35 @@
+<h1>Admin Transactions Page</h1>
+
+<div>
+    <h1>Transaction History</h1>
+    <table class="table table-sm table-hover">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">User</th>
+                <th scope="col">Company</th>
+                <th scope="col">Ticker</th>
+                <th scope="col">Transaction Type</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @transactions.reverse.each_with_index do |transaction, index| %>
+            <tr>
+                <th scope="row"><%= index + 1 %></th>
+                <td><%= User.find(transaction.user_id).email %></td>
+                <td><%= transaction.stock.company_name %></td>
+                <td><%= transaction.stock.ticker %></td>
+                <td><%= transaction.transaction_type %></td>
+                <td><%= transaction.amount %></td>
+                <td><%= transaction.share_price %></td>
+                <td><%= transaction.share_qty %></td>
+                <td><%= transaction.created_at.utc.strftime('%Y-%m-%d') %></td>
+            </tr>
+            <% end %>
+        </tbody>
+    </table>
+</div>

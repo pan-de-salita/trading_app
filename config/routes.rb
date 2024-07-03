@@ -10,6 +10,9 @@ Rails.application.routes.draw do
       patch 'approve_trader_account'
       patch 'deny_trader_account'
     end
+
+    resources :transactions, only: %i[ index ]
+    
   end
 
   resources :stocks, only: %i[index show]

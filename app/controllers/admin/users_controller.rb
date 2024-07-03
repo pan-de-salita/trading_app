@@ -66,7 +66,7 @@ class Admin::UsersController < ApplicationController
 
   # Make sure user cannot access admin privileges
   def authorize_user
-    return if current_user.admin? || current_user == @user
+    return if current_user.admin?
 
     redirect_to root_path, alert: 'You are not authorized to access this page.'
   end
