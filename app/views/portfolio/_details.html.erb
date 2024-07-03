@@ -14,10 +14,14 @@
         <strong>Current Price:</strong>
         <%= stock.price %>
       </li>
-      <ul>
+      <li>
+        <strong>No. Of Shares Owned:</strong>
+        <%= stock.transactions.total_shares %>
+      </li>
+      <li>
         <strong>Average Price:</strong>
         <%= stock.transactions.avg_price %>
-      </ul>
+      </li>
       <li>
         <strong>Gains/Losses:</strong>
         <%= stock
@@ -28,3 +32,6 @@
     <% end %>
   </ul>
 </div>
+
+
+

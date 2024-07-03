@@ -13,7 +13,12 @@ class TransactionsController < ApplicationController
 
     return unless @transaction.save
 
-    redirect_to stock_path(@transaction.stock_id), notice: 'Stock successfully bought'
+    case transaction_params[:transaction_type]
+    when "buy"
+      redirect_to stock_path(@transaction.stock_id), notice: 'Stock successfully bought.'
+    when "sell"
+      redirect_to portfolio_index_path, notice: "Stock successfully sold."
+    end
   end
 
   private
