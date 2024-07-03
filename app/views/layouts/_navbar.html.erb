@@ -17,8 +17,8 @@
     id="navbarSupportedContent"
   >
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <%= link_to "HOME", root_path, class: "nav-link text-primary font-weight-bold" %>
+      <li class="nav-item <%= request.fullpath == root_path ? 'active' : '' %>">
+        <%= link_to "HOME", root_path, class: "nav-link font-weight-bold" %>
       </li>
       <li class="nav-item dropdown">
         <a
@@ -41,11 +41,15 @@
       </li>
 
       <% if current_user.present? && current_user.trader? && current_user.confirmed_at? %>
-        <li class="nav-item"><%= link_to "Stocks", stocks_path, class: "nav-link" %></li>
+        <li class="nav-item <%= request.fullpath.include?('stock') ? 'active' : '' %>">
+          <%= link_to "Stocks", stocks_path, class: "nav-link" %>
+        </li>
       <% end %>
 
       <% if current_user.present? && current_user.trader? && current_user.confirmed_at? && current_user.status.approved? %>
-        <li class="nav-item"><%= link_to "Portfolio", portfolio_index_path, class: "nav-link" %></li>
+        <li class="nav-item <%= request.fullpath.include?('portfolio') ? 'active' : '' %>">
+          <%= link_to "Portfolio", portfolio_index_path, class: "nav-link" %>
+        </li>
       <% end %>
 
       <!-- NOTE: Links accessible only to admins -->
