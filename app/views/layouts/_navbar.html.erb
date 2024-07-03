@@ -1,16 +1,35 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
   <a class="navbar-brand" href="/">LOGO</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div class="collapse navbar-collapse justify-content-between align-items-center" id="navbarSupportedContent">
+  <div
+    class="collapse navbar-collapse justify-content-between align-items-center"
+    id="navbarSupportedContent"
+  >
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <%= link_to "HOME", root_path, class:"nav-link text-primary font-weight-bold" %>
+        <%= link_to "HOME", root_path, class: "nav-link text-primary font-weight-bold" %>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" haref="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a
+          class="nav-link dropdown-toggle"
+          haref="#"
+          id="navbarDropdown"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
           Dropdown
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -20,88 +39,134 @@
           <a class="dropdown-item" href="#">Something else here</a>
         </div>
       </li>
-        <li class="nav-item">
-           <%= link_to "Stocks", stocks_path, class:"nav-link" %>
-        </li>
-       <% if current_user.present? && current_user.admin? %>
-      <li class="nav-item">
-          <%= link_to "All Users", admin_users_path, class:"nav-link" %>
-      </li>
-        <li class="nav-item">
-             <%= link_to "New User", new_admin_user_path, class:"nav-link" %>
-      </li>
+
+      <% if current_user.present? && current_user.trader? && current_user.confirmed_at? %>
+        <li class="nav-item"><%= link_to "Stocks", stocks_path, class: "nav-link" %></li>
       <% end %>
+
+      <% if current_user.present? && current_user.trader? && current_user.confirmed_at? && current_user.status.approved? %>
+        <li class="nav-item"><%= link_to "Portfolio", portfolio_index_path, class: "nav-link" %></li>
+      <% end %>
+
+      <!-- NOTE: Links accessible only to admins -->
+      <% if current_user.present? && current_user.admin? %>
+        <li class="nav-item">
+          <%= link_to "All Users", admin_users_path, class: "nav-link" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "New User", new_admin_user_path, class: "nav-link" %>
+        </li>
+      <% end %>
+
       <li class="nav-item">
-             <%= link_to "Edit Account", edit_user_registration_path, class:"nav-link" %>
+        <%= link_to "Edit Account", edit_user_registration_path, class: "nav-link" %>
       </li>
-        
-     
     </ul>
-   
-    <%# <form class="form-inline my-2 my-lg-0">
+    <!--
+    <form class="form-inline my-2 my-lg-0">
+      --> <!--
       <div class="input-group">
-        <% if @q.present? %>
-        <%# <%= search_form_for @q do |f| %>
-          <%# <% f.label :company_name_or_ticker_start %>
-          <%# <% f.search_field :company_name_or_ticker_start, class:"form-control outline-light", placeholder:"Company Name..." %> 
-        <%# <input type="search" class="form-control" placeholder="Company Name..." aria-label="Search" aria-describedby="button-addon2"> %>
-          <%# <div class="input-group-append">
-            <%= f.submit class: "btn btn-outline-light" %>
-        <%# <% end %>
-        <%# <% end %>
-          <%# <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button> %>
-        <%# </div> %>
-      <%# </div>
-    </form> %>
+        -->
+        <%# if @q.present? %>
+          <%#= search_form_for @q do |f| %>
+            <%# f.label :company_name_or_ticker_start %>
+            <%# f.search_field :company_name_or_ticker_start,
+                           class: "form-control outline-light",
+                           placeholder: "Company Name..." %>
+            <!--
+            <input -->
+            <!-- type="search" --> <!-- class="form-control" --> <!--
+            placeholder="Company Name..." --> <!-- aria-label="Search" --> <!--
+            aria-describedby="button-addon2" --> <!-- > --> <!--
+            <div class="input-group-append">
+              -->
+              <%#= f.submit class: "btn btn-outline-light" %>
+              <!--
+            </div>
+            -->
+          <%# end %>
+        <%# end %>
+        <!--
+        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
+        --> <!--
+      </div>
+      --> <!--
+    </form>
+
+    -->
   </div>
   <div class="d-flex flex-row-reverse mr-2">
     <%= identicon_for(current_user) if current_user.present? %>
   </div>
   <% if current_user.present? %>
-  <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-danger mx-2" %>
+    <%= button_to "Sign Out",
+    destroy_user_session_path,
+    method: :delete,
+    class: "btn btn-danger mx-2" %>
   <% else %>
-  <%= button_to "Sign In", new_user_session_path, class: "btn btn-primary"  %>
-  <%= link_to "Create Account", new_user_registration_path, class: "btn btn-outline-primary mx-2"  %>
-<% end %>
-</nav>
-
-<nav class="navbar navbar-dark bg-light shadow  text-truncate">
-  <% 6.times do |t| %>
-  <div class="m-2">
-  <span class="badge badge-pill badge-success">SMPL</span>
-  <span class="text-success">+0.4%</span>
-  </div>
-  <div class="m-2">
-  <span class="badge badge-pill badge-danger">LPMS</span>
-  <span class="text-danger">-0.2%</span>
-  </div>
+    <%= button_to "Sign In", new_user_session_path, class: "btn btn-primary" %>
+    <%= link_to "Create Account",
+    new_user_registration_path,
+    class: "btn btn-outline-primary mx-2" %>
   <% end %>
 </nav>
 
-
-<!-- Button trigger modal -->
-<%# <br>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Launch demo modal
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog " role="document">
-    <div class="modal-content text-dark">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+<nav class="navbar navbar-dark bg-light shadow text-truncate">
+  <% 6.times do |t| %>
+    <div class="m-2">
+      <span class="badge badge-pill badge-success">SMPL</span>
+      <span class="text-success">+0.4%</span>
     </div>
+    <div class="m-2">
+      <span class="badge badge-pill badge-danger">LPMS</span>
+      <span class="text-danger">-0.2%</span>
+    </div>
+  <% end %>
+</nav>
+<!-- <!-- Button trigger modal --> <!--
+<br>
+--> <!--
+<button -->
+  <!-- type="button" --> <!-- class="btn btn-primary" --> <!--
+  data-toggle="modal" --> <!-- data-target="#exampleModal" --> <!-- > --> <!--
+  Launch demo modal --> <!--
+</button>
+--> <!-- <!-- Modal --> <!--
+<div -->
+  <!-- class="modal fade" --> <!-- id="exampleModal" --> <!-- tabindex="-1" -->
+  <!-- role="dialog" --> <!-- aria-labelledby="exampleModalLabel" --> <!--
+  aria-hidden="true" --> <!-- > --> <!--
+  <div class="modal-dialog " role="document">
+    --> <!--
+    <div class="modal-content text-dark">
+      --> <!--
+      <div class="modal-header">
+        --> <!--
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        --> <!--
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          --> <!--
+          <span aria-hidden="true">&times;</span>
+          --> <!--
+        </button>
+        --> <!--
+      </div>
+      --> <!--
+      <div class="modal-body">
+        --> <!-- ... --> <!--
+      </div>
+      --> <!--
+      <div class="modal-footer">
+        --> <!--
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        --> <!--
+        <button type="button" class="btn btn-primary">Save changes</button>
+        --> <!--
+      </div>
+      --> <!--
+    </div>
+    --> <!--
   </div>
-</div> %>
+  --> <!--
+</div>
+-->
