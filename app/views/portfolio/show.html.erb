@@ -1,0 +1,77 @@
+<%= render "graph" %>
+<h1>Specific Stock</h1>
+
+
+<%= @stock.company_name %>
+<br>
+<br>
+<strong>Price:</strong>
+<%= @stock.price %>
+<br>
+<br>
+<strong>Total Shares Owned:</strong>
+<%= @stock.transactions.total_shares %>
+<br>
+<br>
+<strong>Average Price:</strong>
+<%= @stock.transactions.avg_price %>
+<br>
+<br>
+<strong>Total Gain/Loss:</strong>
+<%= @stock
+    .transactions
+    .map(&:calc_gains_or_losses)
+    .reduce { |acc, curr| acc + curr } / @stock.transactions.length %>
+<br>
+<br>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+    Sell Stock
+</button>
+
+<%= render "transaction_history" %>
+
+<!-- Modal -->
+      <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">
+                <%= @stock.ticker %>
+              </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <%= form_with model: Transaction.new, local: true do |form| %>
+                
+                <fieldset disabled>
+                  <%= form.label "Price per share" %>
+                  <%= form.number_field :share_price, value: @stock.price %>
+                </fieldset>
+
+                <%= form.label "Number of shares" %>
+                <%= form.number_field :share_qty, placeholder: "Maximum of #{@stock.transactions.total_shares}", max: @stock.transactions.total_shares  %>
+
+                <fieldset disabled>
+                  <%= form.label "Total Earnings" %>
+                  <%= form.number_field :amount, value: 0 %>
+                </fieldset>
+
+                <% form.label :transaction_type %>
+                <%= form.hidden_field :transaction_type, value: "sell" %>
+
+                <% form.label :stock_id %>
+                <%= form.hidden_field :stock_id, value: @stock.id %>
+
+                
+            </div>
+            <div class="modal-footer">
+          <%= button_to "Submit", transactions_path, method: :post, class: "btn btn-primary" %> 
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+

@@ -16,10 +16,14 @@
         <% Stock.find(stock.id).set_or_fetch_stock_data %>
         <%= Stock.find(stock.id).price %>
       </li>
-      <ul>
+      <li>
+        <strong>No. Of Shares Owned:</strong>
+        <%= stock.transactions.total_shares %>
+      </li>
+      <li>
         <strong>Average Price:</strong>
         <%= stock.transactions.avg_price %>
-      </ul>
+      </li>
       <li>
         <strong>Gains/Losses:</strong>
         <%= stock
@@ -27,7 +31,9 @@
           .map(&:calc_gains_or_losses)
           .reduce { |acc, curr| acc + curr } / stock.transactions.length %>
       </li>
-    <% end %>
-
+      <% end %>
   </ul>
 </div>
+
+
+
