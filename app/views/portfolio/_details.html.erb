@@ -3,6 +3,7 @@
   <ul>
     <% @stocks.uniq(&:ticker).each do |stock| %>
       <% stock_transactions = @transactions.where(stock_id: stock.id) %>
+      <% current_share_price = stock.price %>
       <li>
         <strong>Ticker:</strong>
         <%= stock.ticker %>
@@ -26,8 +27,6 @@
       <li>
         <strong>Gains/Losses:</strong>
         <!-- TODO: make this pretty -->
-        <% stock_transactions = @transactions.where(stock_id: stock.id) %>
-        <% current_share_price = stock.price %>
         <%= stock_transactions.reduce(0) do |total, transaction|
           total + transaction.calc_gains_or_losses(current_share_price)
         end / stock_transactions.count %>
