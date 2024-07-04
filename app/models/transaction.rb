@@ -18,10 +18,9 @@ class Transaction < ApplicationRecord
   def self.total_shares(user_id = nil, stock_id = nil)
     return unless user_id && stock_id
 
-    transactions = User.find(user_id).transactions.filter { |transaction| transaction.stock_id == stock_id }
-    buy_transactions_qty = Transaction.total_share_qty(transactions, 'buy')
-    sell_transactions_qty = Transaction.total_share_qty(transactions, 'sell')
-    buy_transactions_qty - sell_transactions_qty
+    buy_transaction_qty = Transaction.where(user_id:, stock_id:, transaction_type: 'buy').sum('share_qty')
+    sell_transaction_qty = Transaction.where(user_id:, stock_id:, transaction_type: 'sell').sum('share_qty')
+    buy_transaction_qty - sell_transaction_qty
   end
 
   def self.avg_price(user_id = nil, stock_id = nil)
@@ -35,7 +34,7 @@ class Transaction < ApplicationRecord
       if transaction.transaction_type == 'buy'
         hash[:total_shares] = hash[:total_shares] + transaction.share_qty
         hash[:buy_counter] += 1
-        hash[:avg_price] = (hash[:avg_price] + transaction.share_price) / hash[:counter]
+        hash[:avg_price] = (hash[:avg_price] + transaction.share_price) / hash[:buy_counter]
       elsif transaction.transaction_type == 'sell'
         hash[:total_shares] = hash[:total_shares] - transaction.share_qty
       end
@@ -48,10 +47,4 @@ class Transaction < ApplicationRecord
   end
 
   def self.net_value; end
-
-  def self.total_share_qty(transactions, transaction_type)
-    transactions
-      .filter { |transaction| transaction.transaction_type == transaction_type }
-      .reduce(0) { |acc, curr| acc + curr.share_qty }
-  end
 end
