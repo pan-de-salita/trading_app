@@ -76,3 +76,5 @@ gem 'dotenv'
 gem 'jquery-rails'
 gem 'ransack'
 gem 'ruby_identicon'
+
+gem "rails_charts"

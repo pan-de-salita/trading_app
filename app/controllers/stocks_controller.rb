@@ -17,6 +17,30 @@ class StocksController < ApplicationController
     @stock.set_or_fetch_from_alphavantage
     @stock_timeseries = JSON.parse(@stock.data) unless @stock.data.nil?
     @stock_news = JSON.parse(@stock.news).first(12) unless @stock.news.nil?
+
+    @historical_data = format_stock_data(@stock_timeseries["time_series_daily"]) unless  @stock_timeseries.nil?
+    # Made sure that if nil, page will load
+    if @historical_data
+      @chart_data = @historical_data.each_with_object({}) do |data, hash|
+      hash[data[:time]] = [data[:open], data[:close], data[:low], data[:high]]
+    end
+  end
     console
   end
+
+  private
+
+  def format_stock_data(stock_data)
+    stock_data.map do |time, data|
+      {
+        time: Time.parse(time.to_s),
+        open: data["open"].to_f,
+        high: data["high"].to_f,
+        low: data["low"].to_f,
+        close: data["close"].to_f,
+        volume: data["volume"].to_i
+      }
+    end
+  end
+
 end
