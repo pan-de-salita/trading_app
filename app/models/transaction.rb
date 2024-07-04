@@ -31,18 +31,18 @@ class Transaction < ApplicationRecord
         .transactions
         .filter { |transaction| transaction.stock_id == stock_id }
         .each_with_index
-        .each_with_object({ total_shares: 0, avg_price: 0.0, counter: 0 }) do |(transaction, idx), hash|
+        .each_with_object({ total_shares: 0, avg_price: 0.0, buy_counter: 0 }) do |(transaction, idx), hash|
       if transaction.transaction_type == 'buy'
         hash[:total_shares] = hash[:total_shares] + transaction.share_qty
-        hash[:counter] += 1
+        hash[:buy_counter] += 1
         hash[:avg_price] = (hash[:avg_price] + transaction.share_price) / hash[:counter]
       elsif transaction.transaction_type == 'sell'
         hash[:total_shares] = hash[:total_shares] - transaction.share_qty
       end
 
-      if hash[:total_shares] <= 0 && idx.positive?
+      if hash[:total_shares].zero? && idx.positive?
         hash[:avg_price] = 0.0
-        hash[:counter] = 0
+        hash[:buy_counter] = 0
       end
     end[:avg_price]
   end
