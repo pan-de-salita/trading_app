@@ -1,0 +1,26 @@
+<div>
+  <h1>Graph</h1>
+  <h3>TCKR</h3>
+  <h5>Company Name</h3>
+    <p><% @stock_timeseries %></p>
+    <p><% @historical_data %></p>
+</div>
+
+<div>
+    <% if !@stock.data.nil? %>
+        <%= candlestick_chart(
+         @chart_data,
+         class: 'box',
+         theme: 'roma',
+         options: {
+           xAxis: {
+             axisTick: {
+               alignWithLabel: true
+             }
+           }
+         })
+    %>
+    <% else %>
+        <span>No data available.</span>
+    <% end %>
+</div>
