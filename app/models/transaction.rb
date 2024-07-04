@@ -12,22 +12,43 @@ class Transaction < ApplicationRecord
   }
 
   def calc_gains_or_losses
-    updated_stock = Stock.find(stock.id)
-    updated_stock.set_or_fetch_stock_data
-
-    share_qty * (share_price - updated_stock.price)
+    share_qty * (share_price - Stock.find(stock.id).price)
   end
 
-  def self.avg_price
-    transactions = where(transaction_type: :buy) || 0
+  def self.total_shares(user_id = nil, stock_id = nil)
+    return unless user_id && stock_id
 
-    total_cost = transactions.sum('share_qty * share_price')
-    total_shares = transactions.sum('share_qty')
+    transactions = User.find(user_id).transactions.filter { |transaction| transaction.stock_id == stock_id }
+    buy_transactions_qty = Transaction.total_share_qty(transactions, 'buy')
+    sell_transactions_qty = Transaction.total_share_qty(transactions, 'sell')
+    buy_transactions_qty - sell_transactions_qty
+  end
 
-    return 0 if total_shares.zero?
+  def self.avg_price(user_id = nil, stock_id = nil)
+    return unless user_id && stock_id
 
-    total_cost / total_shares
+    User.find(user_id)
+        .transactions
+        .filter { |transaction| transaction.stock_id == stock_id }
+        .each_with_index
+        .each_with_object({ total_shares: 0, avg_price: 0.0, counter: 0 }) do |(transaction, idx), hash|
+      if transaction.transaction_type == 'buy'
+        hash[:total_shares] = hash[:total_shares] + transaction.share_qty
+        hash[:counter] += 1
+        hash[:avg_price] = (hash[:avg_price] + transaction.share_price) / hash[:counter]
+      elsif transaction.transaction_type == 'sell'
+        hash[:total_shares] = hash[:total_shares] - transaction.share_qty
+      end
+
+      hash[:avg_price] = 0.0 if hash[:total_shares] <= 0 && idx.positive?
+    end[:avg_price]
   end
 
   def self.net_value; end
+
+  def self.total_share_qty(transactions, transaction_type)
+    transactions
+      .filter { |transaction| transaction.transaction_type == transaction_type }
+      .reduce(0) { |acc, curr| acc + curr.share_qty }
+  end
 end
