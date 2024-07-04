@@ -4,6 +4,10 @@ class PortfolioController < ApplicationController
   before_action :set_user_transactions
 
   def index
+    @stock_shares = @stocks.uniq(&:ticker)
+                    .each_with_object({}) do |stock, hash|
+                      hash[stock.company_name] = stock.transactions.total_shares(current_user.id, stock.id).to_i
+                    end
     console
   end
 

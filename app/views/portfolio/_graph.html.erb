@@ -1,19 +1,19 @@
-<div>
-    <div>
-        <h1>Graph</h1>
+<div class="container" >
+    <h1>My Portfolio</h1>
+    <div class="row">
+        <div class="col-6">
+            <%= pie_chart @stock_shares, donut: true, legend: "left"%>
+        </div>
+        <div class="col-6">
+            <% @stocks.uniq(&:ticker).each do |stock| %>
+                <li>
+                    <%= link_to portfolio_path(id: stock.id) do %>
+                    <strong>Company Name:</strong>
+                    <%= stock.company_name %>
+                    <% end %>
+                </li>
+            <% end %>
+        </div>
     </div>
-    <div>
-        <h1>Stocks</h1>
-        <% @stocks.uniq(&:ticker).each do |stock| %>
-            <li>
-                <%= link_to portfolio_path(id: stock.id) do %>
-                <strong>Company Name:</strong>
-                <%= stock.company_name %>
-                <strong>Ticker:</strong>
-                <%= stock.ticker %>
-                <% end %>
-            </li>
-            
-        <% end %>
-    </div>
+    
 </div>
