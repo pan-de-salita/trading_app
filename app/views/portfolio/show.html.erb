@@ -10,18 +10,24 @@
 <br>
 <br>
 <strong>Total Shares Owned:</strong>
-<%= @stock.transactions.total_shares %>
+<%= Transaction.total_shares(current_user.id, @stock.id) %>
 <br>
 <br>
 <strong>Average Price:</strong>
-<%= @stock.transactions.avg_price %>
+<%= Transaction.avg_price(current_user.id, @stock.id) %>
 <br>
 <br>
 <strong>Total Gain/Loss:</strong>
-<%= @stock
-    .transactions
-    .map(&:calc_gains_or_losses)
-    .reduce { |acc, curr| acc + curr } / @stock.transactions.length %>
+<%= current_user
+          .transactions
+          .filter { |transaction| transaction.stock_id == @stock.id }
+          .reduce(0) do |total, filtered_transaction|
+            total + filtered_transaction.calc_gains_or_losses
+          end /
+          current_user
+            .transactions
+            .filter { |transaction| transaction.stock_id == @stock.id }
+            .count %>
 <br>
 <br>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
@@ -51,7 +57,7 @@
                 </fieldset>
 
                 <%= form.label "Number of shares" %>
-                <%= form.number_field :share_qty, placeholder: "Maximum of #{@stock.transactions.total_shares}", max: @stock.transactions.total_shares  %>
+                <%= form.number_field :share_qty, placeholder: "Maximum of #{Transaction.total_shares(current_user.id, @stock.id)}", max: Transaction.total_shares(current_user.id, @stock.id)  %>
 
                 <fieldset disabled>
                   <%= form.label "Total Earnings" %>
