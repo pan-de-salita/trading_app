@@ -1,6 +1,9 @@
 <%= render "graph" %>
 <h1>Specific Stock</h1>
 
+<% stock_transactions = @transactions.where(stock_id: @stock.id) %>
+<% current_share_price = @stock.price %>
+<% total_shares = Transaction.total_shares(stock_transactions) %>
 
 <%= @stock.company_name %>
 <br>
@@ -10,24 +13,17 @@
 <br>
 <br>
 <strong>Total Shares Owned:</strong>
-<%= Transaction.total_shares(current_user.id, @stock.id) %>
+<%= total_shares %>
 <br>
 <br>
 <strong>Average Price:</strong>
-<%= Transaction.avg_price(current_user.id, @stock.id) %>
+<%= Transaction.avg_price(stock_transactions) %>
 <br>
 <br>
 <strong>Total Gain/Loss:</strong>
-<%= current_user
-          .transactions
-          .filter { |transaction| transaction.stock_id == @stock.id }
-          .reduce(0) do |total, filtered_transaction|
-            total + filtered_transaction.calc_gains_or_losses
-          end /
-          current_user
-            .transactions
-            .filter { |transaction| transaction.stock_id == @stock.id }
-            .count %>
+<%= stock_transactions.reduce(0) do |total, transaction|
+  total + transaction.calc_gains_or_losses(current_share_price)
+end / stock_transactions.count %>
 <br>
 <br>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
@@ -37,47 +33,45 @@
 <%= render "transaction_history" %>
 
 <!-- Modal -->
-      <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">
-                <%= @stock.ticker %>
-              </h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <%= form_with model: Transaction.new, local: true do |form| %>
-                
-                <fieldset disabled>
-                  <%= form.label "Price per share" %>
-                  <%= form.number_field :share_price, value: @stock.price %>
-                </fieldset>
-
-                <%= form.label "Number of shares" %>
-                <%= form.number_field :share_qty, placeholder: "Maximum of #{Transaction.total_shares(current_user.id, @stock.id)}", max: Transaction.total_shares(current_user.id, @stock.id)  %>
-
-                <fieldset disabled>
-                  <%= form.label "Total Earnings" %>
-                  <%= form.number_field :amount, value: 0 %>
-                </fieldset>
-
-                <% form.label :transaction_type %>
-                <%= form.hidden_field :transaction_type, value: "sell" %>
-
-                <% form.label :stock_id %>
-                <%= form.hidden_field :stock_id, value: @stock.id %>
-
-                
-            </div>
-            <div class="modal-footer">
-          <%= button_to "Submit", transactions_path, method: :post, class: "btn btn-primary" %> 
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-            <% end %>
-          </div>
-        </div>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">
+          <%= @stock.ticker %>
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
+      <div class="modal-body">
+        <%= form_with model: Transaction.new, local: true do |form| %>
+          
+          <fieldset disabled>
+            <%= form.label "Price per share" %>
+            <%= form.number_field :share_price, value: @stock.price %>
+          </fieldset>
 
+          <%= form.label "Number of shares" %>
+          <%= form.number_field :share_qty, placeholder: "Maximum of #{total_shares}", max: total_shares  %>
+
+          <fieldset disabled>
+            <%= form.label "Total Earnings" %>
+            <%= form.number_field :amount, value: 0 %>
+          </fieldset>
+
+          <% form.label :transaction_type %>
+          <%= form.hidden_field :transaction_type, value: "sell" %>
+
+          <% form.label :stock_id %>
+          <%= form.hidden_field :stock_id, value: @stock.id %>
+
+      </div>
+      <div class="modal-footer">
+    <%= button_to "Submit", transactions_path, method: :post, class: "btn btn-primary" %> 
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>

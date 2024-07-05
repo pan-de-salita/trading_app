@@ -11,26 +11,32 @@ class Transaction < ApplicationRecord
     sell: 'sell'
   }
 
-  def calc_gains_or_losses
-    share_qty * (share_price - Stock.find(stock.id).price)
+  def calc_gains_or_losses(current_share_price)
+    share_qty * (share_price - current_share_price)
   end
 
-  def self.total_shares(user_id = nil, stock_id = nil)
-    return unless user_id && stock_id
+  def self.total_shares(stock_transactions)
+    grouped_transactions = stock_transactions.group_by(&:transaction_type)
 
-    buy_transaction_qty = Transaction.where(user_id:, stock_id:, transaction_type: 'buy').sum('share_qty')
-    sell_transaction_qty = Transaction.where(user_id:, stock_id:, transaction_type: 'sell').sum('share_qty')
+    buy_transactions = grouped_transactions['buy']
+    buy_transaction_qty = buy_transactions.nil? ? 0 : buy_transactions.sum(&:share_qty)
+
+    sell_transactions = grouped_transactions['sell']
+    sell_transaction_qty = sell_transactions.nil? ? 0 : sell_transactions.sum(&:share_qty)
+
     buy_transaction_qty - sell_transaction_qty
   end
 
-  def self.avg_price(user_id = nil, stock_id = nil)
-    return unless user_id && stock_id
-
-    User.find(user_id)
-        .transactions
-        .filter { |transaction| transaction.stock_id == stock_id }
-        .each_with_index
-        .each_with_object({ total_shares: 0, avg_price: 0.0, buy_counter: 0 }) do |(transaction, idx), hash|
+  def self.avg_price(stock_transactions)
+    stock_transactions
+      .each_with_index
+      .each_with_object(
+        {
+          total_shares: 0,
+          avg_price: 0.0,
+          buy_counter: 0
+        }
+      ) do |(transaction, idx), hash|
       if transaction.transaction_type == 'buy'
         hash[:total_shares] = hash[:total_shares] + transaction.share_qty
         hash[:buy_counter] += 1
