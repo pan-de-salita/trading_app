@@ -7,7 +7,7 @@
 </div>
 
 <div>
-    <% if !@stock.data.nil? %>
+    <% if @stock.data.present? %>
         <%= candlestick_chart(
          @chart_data,
          class: 'box',
@@ -17,7 +17,27 @@
              axisTick: {
                alignWithLabel: true
              }
-           }
+           },
+           yAxis: {
+             scale: true,
+             splitArea: {
+               show: true
+             }
+           },
+           dataZoom: [
+            {
+              type: 'inside',
+              start: 0,
+              end: 100
+            },
+            {
+              show: true,
+              type: 'slider',
+              top: '90%',
+              start: 0,
+              end: 100
+            }
+           ],
          })
     %>
     <% else %>

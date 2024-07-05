@@ -2,6 +2,8 @@
   <h1>Details</h1>
   <ul>
     <% @stocks.uniq(&:ticker).each do |stock| %>
+      <% stock_transactions = @transactions.where(stock_id: stock.id) %>
+      <% current_share_price = stock.price %>
       <li>
         <strong>Ticker:</strong>
         <%= stock.ticker %>
@@ -16,25 +18,19 @@
       </li>
       <li>
         <strong>No. Of Shares Owned:</strong>
-        <%= Transaction.total_shares(current_user.id, stock.id) %>
+        <%= Transaction.total_shares(stock_transactions) %>
       </li>
       <li>
         <strong>Average Price:</strong>
-        <%= Transaction.avg_price(current_user.id, stock.id) %>
+        <%= Transaction.avg_price(stock_transactions) %>
       </li>
       <li>
         <strong>Gains/Losses:</strong>
         <!-- TODO: make this pretty -->
-        <%= current_user
-          .transactions
-          .filter { |transaction| transaction.stock_id == stock.id }
-          .reduce(0) do |total, filtered_transaction|
-            total + filtered_transaction.calc_gains_or_losses
-          end /
-          current_user
-            .transactions
-            .filter { |transaction| transaction.stock_id == stock.id }
-            .count %>
+        <%= stock_transactions.reduce(0) do |total, transaction|
+          total + transaction.calc_gains_or_losses(current_share_price)
+        end / stock_transactions.count %>
+        <br>
       </li>
     <% end %>
   </ul>
