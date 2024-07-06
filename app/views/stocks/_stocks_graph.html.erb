@@ -1,40 +1,32 @@
-<div>
-  <h1>Graph</h1>
-  <h3>TCKR</h3>
-  <h5>Company Name</h3>
-    <p><% @stock_timeseries %></p>
-    <p><% @historical_data %></p>
-</div>
-
-<div>
+<div class="d-flex justify-content-center" style="max-width: 100vw;">
+  <div class="w-100" style="max-width: 90vw;">
     <% if @stock.data.present? %>
-        <%= candlestick_chart(
-         @chart_data,
-         class: 'box',
-         theme: 'roma',
-         options: {
-           series: 
-            {
-              type: "candlestick",
-              itemStyle: {
-                color: "#FF1053",
-                borderColor: "#FF1053",
-                color0: "#66999B",
-                borderColor0: "#66999B",
-                  }
-            },
-           xAxis: {
-             axisTick: {
-               alignWithLabel: true
-             }
-           },
-           yAxis: {
-             scale: true,
-             splitArea: {
-               show: true
-             }
-           },
-           dataZoom: [
+      <%= candlestick_chart(
+        @chart_data,
+        class: 'box',
+        theme: 'roma',
+        options: {
+          series: {
+            type: "candlestick",
+            itemStyle: {
+              color: "#FF1053",
+              borderColor: "#FF1053",
+              color0: "#66999B",
+              borderColor0: "#66999B"
+            }
+          },
+          xAxis: {
+            axisTick: {
+              alignWithLabel: true
+            }
+          },
+          yAxis: {
+            scale: true,
+            splitArea: {
+              show: true
+            }
+          },
+          dataZoom: [
             {
               type: 'inside',
               start: 0,
@@ -47,10 +39,11 @@
               start: 0,
               end: 100
             }
-           ],
-         })
-    %>
+          ]
+        })
+      %>
     <% else %>
-        <span>No data available.</span>
+      <span>No data available.</span>
     <% end %>
+  </div>
 </div>
