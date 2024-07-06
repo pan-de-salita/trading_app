@@ -1,7 +1,7 @@
-<div>
+<div class="m-4 text-center">
+    <h2>Users</h2>
 
-    <h1>Users</h1>
-   <table class="table table-striped table-hover">
+<table class="table table-striped table-hover my-4">
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -40,14 +40,21 @@
         } %>
         </td>
         <td>
-        <%= button_to "Deny",
-        admin_user_deny_trader_account_path(user),
-         class:"btn btn-primary",
-        method: :patch,
-        disabled: user.status.denied? ? true : false,
-        data: {
-          confirm: "Deny this user?",
-        } %>
+           <% if user.status.status_type.downcase == "approved" %>
+               <%= button_to "Deny",
+                    admin_user_deny_trader_account_path(user),
+                    class: "btn btn-primary",
+                    method: :patch,
+                    disabled: true,
+                    data: { confirm: "Deny this user?" } %>
+             <% else %>
+                <%= button_to "Deny",
+                    admin_user_deny_trader_account_path(user),
+                    class: "btn btn-primary",
+                    method: :patch,
+                    data: { confirm: "Deny this user?" }
+                     %>
+             <% end %>
         </td>
         <td>
         <%= button_to "Delete", admin_user_path(user),
@@ -61,8 +68,4 @@
   <% end %>
   </tbody>
 </table>
-
-
-
 </div>
-

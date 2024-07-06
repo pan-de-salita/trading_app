@@ -1,12 +1,4 @@
 
-  <%# <% if current_user.admin? %>
-    <%# <div>
-      <%= render "all_users" %>
-      <%# <%= link_to "All Users", admin_users_path %>
-      <%# <%= link_to "New User", new_admin_user_path %>
-      <%# <%= link_to "Stocks", stocks_path %>
-    <%# </div> %>
-  <%# <% end %> 
 <% if current_user.present? %>
   <div class="container d-inline-block align-items-center justify-content-center flex-grow-1 mw-100">
     <%= render "layouts/carousel_imgs" %>
@@ -22,7 +14,9 @@
 
 
 <% else %>
-  <%= button_to "Sign In", new_user_session_path %>
-  <%= link_to "Create Account", new_user_registration_path %>
+  <%= link_to root_path, class: "d-flex justify-content-center align-items-center mt-5" do %>
+    <%= image_tag("DiviSoaria.png", height: "40", alt: "DiviSoaria Logo", class: "img-fluid") %>
+  <% end %>
 <% end %>
+
 <!-- convert to landing page? -->
