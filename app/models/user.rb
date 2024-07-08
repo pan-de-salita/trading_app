@@ -10,14 +10,27 @@ class User < ApplicationRecord
   has_many :transactions
   has_many :stocks, through: :transactions
 
+  # Status configs
+  before_create :initialize_trader_status
+  before_create :initialize_admin_status
+
+  # Roles per user
   # To view all roles, use User.role.keys
   enum :role, {
     admin: 'admin',
     trader: 'trader'
   }, default: 'trader'
 
-  before_create :initialize_trader_status
-  before_create :initialize_admin_status
+  # Validations
+  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d-]+(\.[a-z\d-]+)*\.[a-z]+\z/i
+  validates :email, presence: true, length: { maximum: 256 },
+                    format: { with: VALID_EMAIL_REGEX },
+                    uniqueness: true
+  # NOTE: already builtin validation via enums
+  # validates :role, inclusion: {
+  #   in: %w[admin trader],
+  #   message: '<value>s is not a valid role'
+  # }
 
   # Devise override adding custom logic for authentication. A user may
   # be authenticated when:
