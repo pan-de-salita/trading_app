@@ -33,7 +33,7 @@ class StocksController < ApplicationController
   def format_stock_data(stock_data)
     stock_data.map do |time, data|
       {
-        time: Time.parse(time.to_s),
+        time: Time.parse(time.to_s).strftime("%B %d, %Y"),
         open: data['open'].to_f,
         high: data['high'].to_f,
         low: data['low'].to_f,
