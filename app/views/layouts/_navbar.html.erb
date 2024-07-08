@@ -49,9 +49,7 @@
         <li class="nav-item <%= request.fullpath.include?('stock') ? 'active' : '' %>">
           <%= link_to "Stocks", stocks_path, class: "nav-link" %>
         </li>
-        <li class="nav-item">
-        <%= link_to "Edit Account", edit_user_registration_path, class: "nav-link" %>
-      </li>
+  
       <% end %>
 
       <% if current_user.present? && current_user.trader? && current_user.confirmed_at? && current_user.status.approved? %>

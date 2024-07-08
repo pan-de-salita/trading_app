@@ -39,7 +39,7 @@
               <button type="button" class="btn btn-danger d-flex justify-content-center mx-2">
                 <div class="d-flex align-items-center">
                   <h4 class="mb-0"><strong><%= "#{change}" %></strong> </h4>
-                  <span class="badge badge-light badge-pill text-danger mx-2"><%= "-#{percent}%" %></span>
+                  <span class="badge badge-light badge-pill text-danger mx-2"><%= "#{percent}%" %></span>
                 </div>
               </button>
             <% else %>
@@ -71,7 +71,7 @@
 <%= render "stocks_graph" %>
 
   <h5 class="text-primary ml-5 mt-5">
-      <%= "Read articles realated to #{@stock.company_name}..." %>
+      <%= "Read articles related to #{@stock.company_name}..." %>
   </h5>
 
 <div class="d-block bg-primary mx-auto shadow" style="width:95%; height: 0.1rem;"></div>
