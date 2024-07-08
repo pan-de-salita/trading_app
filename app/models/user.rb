@@ -18,8 +18,6 @@ class User < ApplicationRecord
 
   before_create :initialize_trader_status
   before_create :initialize_admin_status
-  # TODO: Evoke update_trader_status_to_approved
-  # TODO: Evoke update_trader_status_to_denied
 
   # Devise override adding custom logic for authentication. A user may
   # be authenticated when:
