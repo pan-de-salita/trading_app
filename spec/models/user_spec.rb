@@ -21,12 +21,10 @@ RSpec.describe User, type: :model do
     test_roles = [..accepted_roles, 'frontend_dev', 'backend_dev']
 
     test_roles.each_with_index do |role, idx|
-      if accepted_roles.include?(role)
-        expect(build(:user, email: "#{role}_#{idx}@mail.com", role: accepted_role)).to be_valid
-      end
+      expect(build(:user, email: "#{role}_#{idx}@mail.com", role:)).to be_valid if accepted_roles.include?(role)
 
       begin
-        expect(build(:user, email: "unacceptable_#{idx}@mail.com", role: :role)).to_not be_valid
+        expect(build(:user, email: "unacceptable_#{idx}@mail.com", role:)).to_not be_valid
       rescue ArgumentError => e
         puts "Caught error: #{e.message}"
       end
