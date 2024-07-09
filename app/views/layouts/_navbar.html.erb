@@ -1,5 +1,9 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
-  <a class="navbar-brand" href="/">LOGO</a>
+  <%= link_to root_path, class: "navbar-brand" do %>
+  <div class="rounded-circle overflow-hidden" style="width: 40px; height: 40px;">
+    <%= image_tag("DiviSoaria.png", height: "40", alt: "DiviSoaria Logo", ) %>
+    </div>
+  <% end %>
   <button
     class="navbar-toggler"
     type="button"
@@ -45,12 +49,16 @@
         <li class="nav-item <%= request.fullpath.include?('stock') ? 'active' : '' %>">
           <%= link_to "Stocks", stocks_path, class: "nav-link" %>
         </li>
+  
       <% end %>
 
       <% if current_user.present? && current_user.trader? && current_user.confirmed_at? && current_user.status.approved? %>
         <li class="nav-item <%= request.fullpath.include?('portfolio') ? 'active' : '' %>">
           <%= link_to "Portfolio", portfolio_index_path, class: "nav-link" %>
         </li>
+        <li class="nav-item">
+        <%= link_to "Edit Account", edit_user_registration_path, class: "nav-link" %>
+      </li>
       <% end %>
 
       <!-- NOTE: Links accessible only to admins -->
@@ -61,11 +69,12 @@
         <li class="nav-item">
           <%= link_to "New User", new_admin_user_path, class: "nav-link" %>
         </li>
-      <% end %>
-
-      <li class="nav-item">
+        <li class="nav-item">
         <%= link_to "Edit Account", edit_user_registration_path, class: "nav-link" %>
       </li>
+      <% end %>
+
+      
     </ul>
     <!--
     <form class="form-inline my-2 my-lg-0">

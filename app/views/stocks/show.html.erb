@@ -1,40 +1,80 @@
-<h1>Stocks</h1>
+  <div>  
+    <div class="mx-5 mt-5 d-flex align-items-center justify-content-between">
+      <div>
+        <h1 class="display-1 text-dark">
+          <strong><%= @stock.ticker %></strong>
+        </h1>
+        <h4 class="mx-2 text-dark" style="opacity:0.75;">
+          <%= @stock.company_name %>
+        </h4>
+      </div>
+      <% if @stock.price && current_user.status.approved? %>
+        <button type="button" 
+            class="btn btn-outline-primary border-primary ml-auto d-flex justify-content-center align-items-center text-center py-auto" 
+            data-toggle="modal"
+            data-target="#exampleModalCenter">
+            <h3 class="text pt-1">Buy this stock</h3>
+        </button>
+      <% end %>
+    </div>
+
+<div class="d-block bg-primary mx-auto shadow" style="width:95%; height: 0.1rem;"></div>
+
+    <% if @stock_timeseries %>
+    <div class="d-flex flex-fill mx-5 p-2 align-items-center justify-content-between">
+        <% old_stock = nil %>
+        <% k = 2 %>
+          <% while old_stock.nil? && k <= 10 %>
+              <% old_date = (Time.now - k.days).strftime("%Y-%m-%d").to_s %>
+              <% old_stock = @stock_timeseries["time_series_daily"][old_date] %>
+              <% k += 1 %>
+          <% end %>
+        <% old_data = old_stock["close"] %>
+        <% change = (old_data.to_f - @stock.price.to_f).round(2) %>
+        <% percent = ((old_data.to_f - @stock.price.to_f)/old_data.to_f*100).round(2) %>
+      <div class="text-center d-flex flex-fill">
+        <div class="d-flex">
+          <h1 class="d-flex align-items-center justify-content-center text-center flex-fill"><strong class="mr-3"><%= @stock.price %></strong> 
+           <% if percent < 0 %>
+              <button type="button" class="btn btn-danger d-flex justify-content-center mx-2">
+                <div class="d-flex align-items-center">
+                  <h4 class="mb-0"><strong><%= "#{change}" %></strong> </h4>
+                  <span class="badge badge-light badge-pill text-danger mx-2"><%= "#{percent}%" %></span>
+                </div>
+              </button>
+            <% else %>
+              <button type="button" class="btn btn-primary d-flex justify-content-center mx-auto px-3">
+                <div class="d-flex align-items-center">
+                  <h4 class="mb-0"><strong><%= "+#{change}" %></strong> </h4>
+                  <span class="badge badge-light badge-pill text-primary mx-2"><%= "+#{percent}%" %></span>
+                </div>
+              </button>
+            <% end %>
+          </h1>
+      </div>
+
+      <div class="d-flex ml-auto text-primary flex-fil">
+        <span class="text pl-4 my-auto"><strong>Open: <%= @stock.open %></strong></span>
+        <span class="text pl-4 my-auto"><strong>Previous Close: <%= old_data.to_f.round(2) %></strong></span>
+        <span class="text pl-4 my-auto"><strong>Volume: <%= @stock.volume %></strong></span>
+      </div>
+
+  </div>
+
+
+
+ 
+
+<% end %>
+
+</div>
 <%= render "stocks_graph" %>
-<%= @stock.company_name %>
-<br>
-<br>
-<%= @stock.ticker %>
-<br>
-<br>
-<% if @stock_timeseries %>
-  Price/Close:
-  <%= @stock.price %>
-  <br>
-  <br>
-  Open:
-  <%= @stock.open %>
-  <br>
-  <br>
-  High:
-  <%= @stock.high %>
-  <br>
-  <br>
-  Low:
-  <%= @stock.low %>
-  <br>
-  <br>
-  Volume:
-  <%= @stock.volume %>
-  <br>
-  <br>
-  <% if @stock.price && current_user.status.approved? %>
-  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-    Buy this stock
-  </button>
-<% end %>
-  <br>
-  <br>
-<% end %>
+
+  <h5 class="text-primary ml-5 mt-5">
+      <%= "Read articles related to #{@stock.company_name}..." %>
+  </h5>
+
+<div class="d-block bg-primary mx-auto shadow" style="width:95%; height: 0.1rem;"></div>
 
 <% if @stock_news %>
   <div class="container mt-5">
@@ -61,7 +101,7 @@
 <% else %>
   The Alphavantage API isn't working at the moment...
 <% end %>
-
+</div>
 <!-- Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
