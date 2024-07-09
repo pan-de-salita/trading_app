@@ -14,6 +14,7 @@
             </tr>
         </thead>
         <tbody>
+            <% if @transactions.any? %>
             <% @transactions.reverse.each_with_index do |transaction, index| %>
             <tr>
                 <th scope="row"><%= index + 1 %></th>
@@ -25,6 +26,12 @@
                 <td><%= display_with_decimals(transaction.share_qty, 0) %></td>
                 <td><%= transaction.created_at.utc.strftime('%Y-%m-%d') %></td>
             </tr>
+            <% end %>
+
+            <% else %>
+                <tr>
+                    <td>No transaction history yet.<td>
+                </tr>
             <% end %>
         </tbody>
     </table>

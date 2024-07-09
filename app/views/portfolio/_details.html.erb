@@ -14,21 +14,27 @@
             </tr>
         </thead>
         <tbody>
-            <% @stocks.uniq(&:ticker).each_with_index do |stock, index| %>
-            <% stock_transactions = @transactions.where(stock_id: stock.id) %>
-            <% current_share_price = stock.price %>
-            <tr>
-                <th scope="row"><%= index + 1 %></th>
-                <td><%= stock.company_name %></td>
-                <td><%= stock.ticker %></td>
-                <td><%= display_with_decimals(stock.price, 2) %></td>
-                <td><%= display_with_decimals(Transaction.total_shares(stock_transactions), 0) %></td>
-                <td><%= display_with_decimals(Transaction.avg_price(stock_transactions), 2) %></td>
-                <td><%= stock_transactions.reduce(0) do |total, transaction|  
-                          total + transaction.calc_gains_or_losses(current_share_price)
-                          end / stock_transactions.count %>
-                          </td>
-            </tr>
+            <%if @stocks.any? %>
+              <% @stocks.uniq(&:ticker).each_with_index do |stock, index| %>
+              <% stock_transactions = @transactions.where(stock_id: stock.id) %>
+              <% current_share_price = stock.price %>
+              <tr>
+                  <th scope="row"><%= index + 1 %></th>
+                  <td><%= stock.company_name %></td>
+                  <td><%= stock.ticker %></td>
+                  <td><%= display_with_decimals(stock.price, 2) %></td>
+                  <td><%= display_with_decimals(Transaction.total_shares(stock_transactions), 0) %></td>
+                  <td><%= display_with_decimals(Transaction.avg_price(stock_transactions), 2) %></td>
+                  <td><%= stock_transactions.reduce(0) do |total, transaction|  
+                            total + transaction.calc_gains_or_losses(current_share_price)
+                            end / stock_transactions.count %>
+                            </td>
+              </tr>
+              <% end %>
+            <% else %>
+              <tr>
+                <td>No stock info to display.</td>
+              </tr>
             <% end %>
         </tbody>
     </table>
