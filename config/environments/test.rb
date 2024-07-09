@@ -1,4 +1,5 @@
 require 'active_support/core_ext/integer/time'
+require 'alphavantage'
 
 # The test environment is used exclusively to run your application's
 # test suite. You never need to work with it otherwise. Remember that
@@ -68,4 +69,8 @@ Rails.application.configure do
 
   # Allow generating absolute urls with routing url helpers.
   Rails.application.routes.default_url_options[:host] = 'localhost:3000'
+
+  Alphavantage.configure do |config|
+    config.api_key = ENV['TEST_ALPHAVANTAGE_API_KEY']
+  end
 end
