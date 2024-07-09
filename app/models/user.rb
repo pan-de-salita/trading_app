@@ -26,7 +26,7 @@ class User < ApplicationRecord
   validates :email, presence: true, length: { maximum: 256 },
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: true
-  # NOTE: already builtin validation via enums
+  # NOTE: validation already builtin via enums
   # validates :role, inclusion: {
   #   in: %w[admin trader],
   #   message: '<value>s is not a valid role'
@@ -37,7 +37,7 @@ class User < ApplicationRecord
   # - They are an admin
   # - Their account was confirmed via email (has a created_at? attr)
   def active_for_authentication?
-    super && (admin? || confirmed_at?)
+    super || admin?
   end
 
   def inactive_message
