@@ -1,0 +1,30 @@
+<div class="py-4 px-4" >
+  <h1>My Portfolio</h1>
+    <% if @stock_shares.any? %>
+        <div class="row w-100 justify-content-around align-items-center">
+            <div class="col-6">
+                    <%= donut_chart @stock_shares,
+                            options: {
+                                color: [ "#51cb20", '#66999B', '#FF1053', '#fac858', '#1F1F1F', '#73c0de', '#3ba272', '#fc8452', '#9a60b4']
+                            }
+                    %>
+            </div>
+            <div class="col-6">
+                <h3>Quick Links to Stocks</h3>
+                <ul class="list-unstyled" >
+                    <% @stocks.uniq(&:ticker).each do |stock| %>
+                        <li>
+                            <%= link_to portfolio_path(id: stock.id) do %>
+                            <strong>Company Name:</strong>
+                            <%= stock.company_name %>
+                            <% end %>
+                        </li>
+                    <% end %>
+                </ul>
+            </div>
+        </div>
+    <% else %>
+        <span>Your Portfolio is currently empty</span>
+    <% end %>
+</div>
+
