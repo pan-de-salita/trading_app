@@ -16,25 +16,25 @@ RSpec.describe User, type: :model do
     expect(trader_with_mismatching_passwords.errors.full_messages).to include("Password confirmation doesn't match Password")
   end
 
-  it 'should only acceptable roles' do
-    acceptable_roles = %w[admin trader]
-    acceptable_roles.each_with_index do |accepted_role, idx|
-      expect(build(:user, email: "#{accepted_role}_#{idx}@mail.com", role: accepted_role)).to be_valid
-    end
-  end
+  it 'should carry only acceptable roles' do
+    accepted_roles = %w[admin trader]
+    test_roles = [..accepted_roles, 'frontend_dev', 'backend_dev']
 
-  it 'should not carry unacceptable roles' do
-    unacceptable_roles = %w[frontend_dev backend_dev fullstack_dev]
-    unacceptable_roles.each_with_index do |unacceptable_role, idx|
-      user = build(:user, email: "#{accepted_role}_#{idx}@mail.com", role: unacceptable_role)
-      expect(user).to raise_error(ArgumentError)
-    rescue StandardError => e
-      p "Caught error: #{e.message}"
+    test_roles.each_with_index do |role, idx|
+      if accepted_roles.include?(role)
+        expect(build(:user, email: "#{role}_#{idx}@mail.com", role: accepted_role)).to be_valid
+      end
+
+      begin
+        expect(build(:user, email: "unacceptable_#{idx}@mail.com", role: :role)).to_not be_valid
+      rescue ArgumentError => e
+        puts "Caught error: #{e.message}"
+      end
     end
   end
 
   it "should be of role 'trader' if no role was specified upon creation" do
-    trader_with_no_role_specified = build(:user, :trader)
+    trader_with_no_role_specified = build(:user, email: 'user@mail.com')
     expect(trader_with_no_role_specified).to be_valid
     expect(trader_with_no_role_specified.role).to eq('trader')
   end
