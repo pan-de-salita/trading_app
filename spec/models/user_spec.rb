@@ -18,10 +18,13 @@ RSpec.describe User, type: :model do
 
   it 'should carry only acceptable roles' do
     accepted_roles = %w[admin trader]
-    test_roles = [..accepted_roles, 'frontend_dev', 'backend_dev']
+    test_roles = accepted_roles + %w[frontend_dev backend_dev]
 
     test_roles.each_with_index do |role, idx|
-      expect(build(:user, email: "#{role}_#{idx}@mail.com", role:)).to be_valid if accepted_roles.include?(role)
+      if accepted_roles.include?(role)
+        expect(build(:user, email: "#{role}_#{idx}@mail.com", role:)).to be_valid
+        next
+      end
 
       begin
         expect(build(:user, email: "unacceptable_#{idx}@mail.com", role:)).to_not be_valid
