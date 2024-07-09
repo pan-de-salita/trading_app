@@ -69,17 +69,26 @@
     <% @stock_news.each_slice(3) do |slice| %>
       <div class="row my-4">
         <% slice.each do |news| %>
-          <div class="col-md-4">
-            <div class="card">
-              <img src="<%= news['banner_image'] %>" class="card-img-top" alt="<%= news['title'] %>">
-              <div class="card-body">
-                <h5 class="card-title"><%= news["title"] %></h5>
-                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                <p class="card-text"><small class="text-muted"><%= news["time_published"] %></small></p>
+          <div class="col-md-4 d-flex align-items-stretch">
+            <div class="card w-100 d-flex flex-column h-100">
+              <img
+                src="<%= news['banner_image'] %>"
+                class="card-img-top"
+                alt="<%= news['title'] %>"
+              >
+              <div class="card-body d-flex flex-column">
+                <h6 class="card-title"><%= news["title"] %></h6>
+                <p class="card-text flex-grow-1"> <%= news["summary"] %> </p>
+                <% published_date = Date.parse(news["time_published"]) rescue nil %>
+                <% if published_date %>
+                  <p class="card-text"><small class="text-muted"><%= published_date.strftime("%B %d, %Y") %></small></p>
+                <% else %>
+                  <p class="card-text"><small class="text-muted">Invalid Date</small></p>
+                <% end %>
               </div>
-                <div class="card-footer">
-                  <a href="#" class="d-inline-block stretched-link text-truncate mw-100"><%= news["url"] %></a>
-                </div>
+              <div class="card-footer mt-auto">
+                <a href="<%= news["url"] %>" class="d-inline-block stretched-link text-truncate mw-100"><%= news["url"] %></a>
+              </div>
             </div>
           </div>
         <% end %>
