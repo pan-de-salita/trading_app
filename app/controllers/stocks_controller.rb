@@ -9,7 +9,7 @@ class StocksController < ApplicationController
       response = Alphavantage::Client.new(function: 'NEWS_SENTIMENT').json
       response['feed'].first(12) unless response['information']
     end
-    console
+ 
   end
 
   def show
