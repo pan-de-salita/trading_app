@@ -28,7 +28,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def edit
-    console
+
   end
 
   def update
