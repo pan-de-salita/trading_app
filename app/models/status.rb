@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: statuses
+#
+#  id          :bigint           not null, primary key
+#  status_type :enum             default("pending"), not null
+#  user_id     :bigint           not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
 class Status < ApplicationRecord
   # Associations
   belongs_to :user

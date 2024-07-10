@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: stocks
+#
+#  id           :bigint           not null, primary key
+#  ticker       :string
+#  company_name :string
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  data         :string
+#  news         :string
+#  price        :decimal(, )
+#  open         :decimal(, )
+#  high         :decimal(, )
+#  low          :decimal(, )
+#  volume       :bigint
+#
 class Stock < ApplicationRecord
   has_many :transactions, dependent: :destroy
   has_many :users, through: :transactions
@@ -17,19 +34,18 @@ class Stock < ApplicationRecord
   end
 
   def set_or_fetch_from_alphavantage
-    set_or_fetch_stock_data
-    set_or_fetch_stock_news
+    nil if set_or_fetch_stock_data.nil? || set_or_fetch_stock_news.nil?
   end
 
   def set_or_fetch_stock_data
     # Prevent calling when the following are true:
     # - Stock has data
     # - Stock's last update is the same as current date
-    return if data.present? &&
-              JSON.parse(data)['meta_data']['last_refreshed'] == DateTime.now.strftime('%Y-%m-%d')
+    return nil if data.present? &&
+                  JSON.parse(data)['meta_data']['last_refreshed'] == DateTime.now.strftime('%Y-%m-%d')
 
     stock_timeseries = Alphavantage::TimeSeries.new(symbol: ticker).daily(outputsize: 'compact')
-    return if stock_timeseries.information
+    return nil if stock_timeseries.information
 
     update_with_fetched_data(stock_timeseries)
   end
@@ -49,9 +65,10 @@ class Stock < ApplicationRecord
     # Prevent calling when the following are true:
     # - Stock has news
     # - Stock's last update is the same as current date
-    return if news.present? &&
-              DateTime.strptime(JSON.parse(news).first['time_published'],
-                                '%Y%m%dT%H%M%S').strftime('%Y-%m-%d') == DateTime.now.strftime('%Y-%m-%d')
+    return nil if news.present? &&
+                  news.any? &&
+                  DateTime.strptime(JSON.parse(news).first['time_published'],
+                                    '%Y%m%dT%H%M%S').strftime('%Y-%m-%d') == DateTime.now.strftime('%Y-%m-%d')
 
     stock_news = Alphavantage::Client.new(function: 'NEWS_SENTIMENT', tickers: ticker).json
     update(news: stock_news.feed.to_json) unless stock_news.information

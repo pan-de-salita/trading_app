@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: transactions
+#
+#  id               :bigint           not null, primary key
+#  amount           :decimal(, )
+#  share_price      :decimal(, )
+#  share_qty        :decimal(, )
+#  transaction_type :enum             not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  user_id          :bigint
+#  stock_id         :bigint
+#
 class Transaction < ApplicationRecord
   belongs_to :stock, optional: true
   belongs_to :user
@@ -11,7 +25,7 @@ class Transaction < ApplicationRecord
     sell: 'sell'
   }
 
-  def calc_gains_or_losses(current_share_price)
+  def gain_loss(current_share_price)
     share_qty * (share_price - current_share_price)
   end
 
@@ -38,11 +52,11 @@ class Transaction < ApplicationRecord
         }
       ) do |(transaction, idx), hash|
       if transaction.transaction_type == 'buy'
-        hash[:total_shares] = hash[:total_shares] + transaction.share_qty
+        hash[:total_shares] += transaction.share_qty
         hash[:buy_counter] += 1
         hash[:avg_price] = (hash[:avg_price] + transaction.share_price) / hash[:buy_counter]
       elsif transaction.transaction_type == 'sell'
-        hash[:total_shares] = hash[:total_shares] - transaction.share_qty
+        hash[:total_shares] -= transaction.share_qty
       end
 
       if hash[:total_shares].zero? && idx.positive?
