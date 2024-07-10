@@ -80,6 +80,9 @@ GEM
     alphavantage (1.2.0)
       faraday (~> 1.4)
       hashie (~> 4.1)
+    annotate (3.2.0)
+      activerecord (>= 3.2, < 8.0)
+      rake (>= 10.4, < 14.0)
     autoprefixer-rails (10.4.16.0)
       execjs (~> 2)
     base64 (0.2.0)
@@ -381,6 +384,7 @@ PLATFORMS
 
 DEPENDENCIES
   alphavantage
+  annotate
   bootsnap
   bootstrap (~> 4.3.1)
   capybara

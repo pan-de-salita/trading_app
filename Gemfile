@@ -62,6 +62,8 @@ group :development do
 
   # Preview emails sent from the application
   gem 'letter_opener'
+
+  gem 'annotate'
 end
 
 group :test do
