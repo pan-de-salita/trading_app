@@ -21,7 +21,11 @@
 <br>
 <strong>Total Gain/Loss:</strong>
 <%= stock_transactions.reduce(0) do |total, transaction|
-  total + transaction.calc_gains_or_losses(current_share_price) if transaction.buy?
+  if transaction.buy?
+    total + transaction.calc_gains_or_losses(current_share_price)
+  else
+    total
+  end
 end / stock_transactions.count %>
 <br>
 <br>
