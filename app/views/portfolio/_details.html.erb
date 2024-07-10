@@ -1,5 +1,5 @@
 <div class="px-4 py-2">
-  <h1>Stock Details</h1>
+  <h4>Stock Details</h4>
   <table class="table table-sm table-hover table-striped">
     <thead>
       <tr>
@@ -21,7 +21,11 @@
           <% avg_price = Transaction.avg_price(stock_transactions) %>
           <tr>
             <th scope="row"><%= index + 1 %></th>
-            <td><%= stock.company_name %></td>
+            <td>
+              <%= link_to portfolio_path(id: stock.id) do %>
+                     <%= stock.company_name %>
+                    <% end %>
+            </td>
             <td><%= stock.ticker %></td>
             <td><%= display_with_decimals(stock.price, 2) %></td>
             <td><%= display_with_decimals(total_shares, 0) %></td>

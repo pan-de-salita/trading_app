@@ -1,7 +1,7 @@
 class PortfolioController < ApplicationController
   before_action :check_trader_approved?
   before_action :set_user_stocks_with_positive_shares
-  before_action :set_user_transactions
+  before_action :set_user_transactions, except: [:show]
 
   def index
     console
@@ -13,6 +13,7 @@ end
 
   def show
     @stock = Stock.find(params[:id])
+    @transactions = current_user.transactions.where(stock_id: @stock.id)
   end
 
   private
