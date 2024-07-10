@@ -19,8 +19,37 @@ RSpec.describe Transaction, type: :model do
   let!(:google_stock) { create(:stock, price: 10.00) }
 
   context 'validations' do
+    it 'should accept share_qty of value 1 or greater' do
+      expect(build(
+               :transaction,
+               transaction_type: 'buy',
+               share_qty: 0,
+               share_price: google_stock.price,
+               amount: google_stock.price * 10,
+               user_id: trader.id,
+               stock_id: google_stock.id
+             )).to_not be_valid
+      expect(build(
+               :transaction,
+               transaction_type: 'sell',
+               share_qty: 1,
+               share_price: google_stock.price,
+               amount: google_stock.price * 10,
+               user_id: trader.id,
+               stock_id: google_stock.id
+             )).to be_valid
+      expect(build(
+               :transaction,
+               transaction_type: 'buy',
+               share_qty: 10,
+               share_price: google_stock.price,
+               amount: google_stock.price * 10,
+               user_id: trader.id,
+               stock_id: google_stock.id
+             )).to be_valid
+    end
+
     it 'should only permit acceptable transaction types' do
-      p google_stock
       acceptable_transaction_types = %w[buy sell deposit withdraw]
       test_transaction_types = acceptable_transaction_types + %w[sales purchases receipts payments]
 
