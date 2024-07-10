@@ -14,11 +14,19 @@
 #
 FactoryBot.define do
   factory :transaction do
-    amount { "9.99" }
-    share_price { "9.99" }
-    share_qty { "9.99" }
-    transaction_type { "" }
-    user { nil }
-    stock { nil }
+    # amount { '9.99' }
+    # share_price { '9.99' }
+    # share_qty { '9.99' }
+    # transaction_type { '' }
+    # user { nil }
+    # stock { nil }
+
+    trait :buy do
+      transaction_type { 'buy' }
+    end
+
+    trait :sell do
+      transaction_type { 'sell' }
+    end
   end
 end
