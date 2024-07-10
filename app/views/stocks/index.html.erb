@@ -15,40 +15,71 @@
   <% end %>
 </div>
 
-<% @stocks.each do |stock| %>
-  Ticker:
-  <%= stock.ticker %>
-  <br>
-  Company name:
-  <%= stock.company_name %>
-  <br>
-  <div data-turbo-prefetch="false">
-    <%= link_to "Get Stock Quote", stock_path(stock.id) %>
-  </div>
-  <br>
+<%# search kinemisu %>
+
+<% if @stocks.present? %>
+    <div class="container">
+      <% @stocks.each_slice(2) do |slice| %>
+        <div class="row my-3">
+          <% slice.each do |stock| %>
+            <div class="col-md-6 d-flex align-items-stretch"  style="min-height:10rem;">  
+              <div class="card w-100 outline-secondary d-flex flex-column border-primary">
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title"><%= stock.ticker %>
+                  </h5>
+                  <div class="d-block bg-primary mx-auto shadow mb-2" style="width:100%; height: 0.1rem;"></div>
+                  <div class="d-flex justify-content-between mt-2">
+                  <p class="card-text w-50"><%= stock.company_name %>
+                  </p>
+                   <div data-turbo-prefetch="false">
+                      <%= link_to "Get Stock Quote", stock_path(stock.id), class: "btn btn-primary" %>
+                    </div>
+                  </div>
+          
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+<% else %>
+  <blockquote class="blockquote text-center">
+  <p class="mb-0 text-danger">Stock(s) not found. Please double-check your query.</p>
+</blockquote>
 <% end %>
 
+
+
+
+
+
+<%# search kinemisu %>
+
 <% if @general_news %>
-  <div class="container mt-5 d-flex flex-wrap">
+  <div class="container mt-5">
     <% @general_news.each_slice(3) do |slice| %>
       <div class="row my-4">
         <% slice.each do |news| %>
-          <div class="col-md-4">
-            <div class="card">
+          <div class="col-md-4 d-flex align-items-stretch">
+            <div class="card w-100 d-flex flex-column h-100">
               <img
                 src="<%= news['banner_image'] %>"
                 class="card-img-top"
                 alt="<%= news['title'] %>"
               >
-              <div class="card-body">
-                <h5 class="card-title"><%= news["title"] %></h5>
-                <p class="card-text">This is a longer card with supporting text below as a natural
-                  lead-in to additional content. This content is a little bit
-                  longer.</p>
-                <p class="card-text"><small class="text-muted"><%= news["time_published"] %></small></p>
+              <div class="card-body d-flex flex-column">
+                <h6 class="card-title"><%= news["title"] %></h6>
+                <p class="card-text flex-grow-1"> <%= news["summary"] %> </p>
+                <% published_date = Date.parse(news["time_published"]) rescue nil %>
+                <% if published_date %>
+                  <p class="card-text"><small class="text-muted"><%= published_date.strftime("%B %d, %Y") %></small></p>
+                <% else %>
+                  <p class="card-text"><small class="text-muted">Invalid Date</small></p>
+                <% end %>
               </div>
-              <div class="card-footer">
-                <a href=<%= "#{news["url"]}"%> class="d-inline-block stretched-link text-truncate mw-100"><%= news["url"] %></a>
+              <div class="card-footer mt-auto">
+                <a href="<%= news["url"] %>" class="d-inline-block stretched-link text-truncate mw-100"><%= news["url"] %></a>
               </div>
             </div>
           </div>
@@ -59,6 +90,8 @@
 <% else %>
   The Alphavantage API isn't working at the moment...
 <% end %>
+
+
 
 <% button_to "Sign Out",
 destroy_user_session_path,
