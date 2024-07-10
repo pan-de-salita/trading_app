@@ -25,7 +25,6 @@ class StocksController < ApplicationController
         hash[data[:time]] = [data[:open], data[:close], data[:low], data[:high]]
       end
     end
-    console
   end
 
   private

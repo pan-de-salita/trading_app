@@ -6,7 +6,8 @@ module UsersHelper
       square_size: square_size_default
     )
     image_tag("data:image/png;base64,#{base64_identicon}", alt: user.email,
-                                                           class: 'border border-white w-25 rounded-circle')
+                                                           class: 'bg-primary rounded-circle',
+                                                           style: "height:40px;" )
   rescue StandardError => e
     Rails.logger.error("Failed to generate identicon for #{user}: #{e.message}")
 
