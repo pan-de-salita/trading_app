@@ -15,13 +15,12 @@
 require 'rails_helper'
 
 RSpec.describe Transaction, type: :model do
-  before :all do
-    @trader = User.find_by(email: 'txn@mail.com') || create(:user, :confirmed_email, email: 'txn@mail.com')
-    @google_stock = Stock.find_by(ticker: 'GOOG').update(price: 10) || create(:stock, price: 10)
-  end
+  let!(:trader) { create(:user, :trader, :confirmed_email) }
+  let!(:google_stock) { create(:stock, price: 10.00) }
 
   context 'validations' do
     it 'should only permit acceptable transaction types' do
+      p google_stock
       acceptable_transaction_types = %w[buy sell deposit withdraw]
       test_transaction_types = acceptable_transaction_types + %w[sales purchases receipts payments]
 
@@ -31,10 +30,10 @@ RSpec.describe Transaction, type: :model do
                    :transaction,
                    transaction_type:,
                    share_qty: 10,
-                   share_price: @google_stock.price,
-                   amount: @google_stock.price * 10,
-                   user_id: @trader.id,
-                   stock_id: @google_stock.id
+                   share_price: google_stock.price,
+                   amount: google_stock.price * 10,
+                   user_id: trader.id,
+                   stock_id: google_stock.id
                  )).to be_valid
           next
         end
@@ -44,10 +43,10 @@ RSpec.describe Transaction, type: :model do
                    :transaction,
                    transaction_type:,
                    share_qty: 10,
-                   share_price: @google_stock.price,
-                   amount: @google_stock.price * 10,
-                   user_id: @trader.id,
-                   stock_id: @google_stock.id
+                   share_price: google_stock.price,
+                   amount: google_stock.price * 10,
+                   user_id: trader.id,
+                   stock_id: google_stock.id
                  )).to_not be_valid
         rescue ArgumentError => e
           puts "Caught error: #{e}"
