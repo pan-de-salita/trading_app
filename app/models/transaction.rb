@@ -25,7 +25,7 @@ class Transaction < ApplicationRecord
     sell: 'sell'
   }
 
-  def calc_gains_or_losses(current_share_price)
+  def gain_loss(current_share_price)
     share_qty * (share_price - current_share_price)
   end
 
@@ -52,11 +52,11 @@ class Transaction < ApplicationRecord
         }
       ) do |(transaction, idx), hash|
       if transaction.transaction_type == 'buy'
-        hash[:total_shares] = hash[:total_shares] + transaction.share_qty
+        hash[:total_shares] += transaction.share_qty
         hash[:buy_counter] += 1
         hash[:avg_price] = (hash[:avg_price] + transaction.share_price) / hash[:buy_counter]
       elsif transaction.transaction_type == 'sell'
-        hash[:total_shares] = hash[:total_shares] - transaction.share_qty
+        hash[:total_shares] -= transaction.share_qty
       end
 
       if hash[:total_shares].zero? && idx.positive?
