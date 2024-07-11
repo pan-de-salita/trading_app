@@ -4,7 +4,6 @@ class PortfolioController < ApplicationController
   before_action :set_user_transactions, except: [:show]
 
   def index
- 
     @stock_shares = @transactions.group_by(&:stock_id).each_with_object(Hash.new(0)) do |(stock_id, transactions), hash|
 hash[Stock.find(stock_id).company_name] = Transaction.total_shares(transactions)
 end
