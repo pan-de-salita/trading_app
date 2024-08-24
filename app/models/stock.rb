@@ -66,7 +66,6 @@ class Stock < ApplicationRecord
     # - Stock has news
     # - Stock's last update is the same as current date
     return nil if news.present? &&
-                  news.any? &&
                   DateTime.strptime(JSON.parse(news).first['time_published'],
                                     '%Y%m%dT%H%M%S').strftime('%Y-%m-%d') == DateTime.now.strftime('%Y-%m-%d')
 
