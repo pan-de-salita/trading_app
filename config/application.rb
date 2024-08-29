@@ -26,5 +26,6 @@ module TradingApp
 
     #configure Rails to use asset pipeline
     config.assets.enabled = true
+    config.assets.paths << Rails.root.join('app', 'assets', 'images')
   end
 end
